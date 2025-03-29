@@ -48,7 +48,7 @@ async function createAuction(req, res, next) {
 
 async function getAuctions(req, res, next) {
   try {
-    const auctions = await auctionModel.find().populate({path: 'farmer', select: 'name'});
+    const auctions = await auctionModel.find().populate({path: 'farmerId', select: 'name'});
     console.log(auctions);
     res.json(auctions);
   } catch (error) {
@@ -77,7 +77,7 @@ async function updateAuction(req, res, next) {
 const isOwner = async (req, res, next) => {
   try {
     const auction = await auctionModel.findById(req.params.id);
-    if (auction.farmer.toString() !== req.userId) {
+    if (auction.farmerId.toString() !== req.userId) {
       return next(
         createHttpError(403, "You are not the owner of this auction")
       );
