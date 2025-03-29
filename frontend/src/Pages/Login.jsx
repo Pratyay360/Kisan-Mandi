@@ -1,8 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import * as zod from "zod";
+import { Button } from "@/src/components/ui/button";
 import {
   Form,
   FormControl,
@@ -10,23 +9,25 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
+} from "@/src/components/ui/form";
+import { Input } from "@/src/components/ui/input";
+import { Card, CardContent } from "@/src/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/src/components/ui/radio-group";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useToast } from "@/src/App";
 
-const FormSchema = z.object({
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-  password: z.string().min(6, {
-    message: "Password must be at least 6 characters.",
-  }),
-  role: z.enum(["farmer", "wholesaler"]),
+const FormSchema = zod.object({
+  email: zod.string().email({ message: "Invalid email address" }),
+  password: zod.string().min(1, "Password is required"),
+  role: zod.enum(["farmer", "vendor"]),
 });
 
 export default function Login() {
+  const { showError, showSuccess } = useToast();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -36,9 +37,38 @@ export default function Login() {
     },
   });
 
-  function onSubmit(data) {
-    console.log("Login successful:", data);
-    // Add post-login logic here
+  async function onSubmit(data) {
+    setLoading(true);
+    try {
+      // API call for login
+      const response = await fetch("http://localhost:5000/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      
+      const result = await response.json();
+      
+      if (!response.ok) {
+        showError(result.message || "Login failed");
+        return;
+      }
+      
+      // Store token and user info
+      localStorage.setItem("token", result.token);
+      localStorage.setItem("userId", result.userId);
+      localStorage.setItem("role", result.role);
+      localStorage.setItem("name", result.name);
+      
+      showSuccess("Login successful!");
+      navigate("/marketplace");
+    } catch (error) {
+      showError(error.message || "Login failed");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -70,12 +100,18 @@ export default function Login() {
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input type="email" placeholder="Enter your email" {...field} />
+                          <Input 
+                            type="email" 
+                            placeholder="Email address" 
+                            {...field} 
+                            disabled={loading}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
+
                   <FormField
                     control={form.control}
                     name="password"
@@ -83,12 +119,18 @@ export default function Login() {
                       <FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                          <Input type="password" placeholder="Enter your password" {...field} />
+                          <Input 
+                            type="password" 
+                            placeholder="Password" 
+                            {...field} 
+                            disabled={loading}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
+
                   <FormField
                     control={form.control}
                     name="role"
@@ -96,14 +138,19 @@ export default function Login() {
                       <FormItem>
                         <FormLabel>I am a</FormLabel>
                         <FormControl>
-                          <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex space-x-4">
+                          <RadioGroup 
+                            className="flex space-x-4" 
+                            value={field.value}
+                            onValueChange={field.onChange}
+                            disabled={loading}
+                          >
                             <div className="flex items-center space-x-2">
                               <RadioGroupItem value="farmer" id="farmer" />
-                              <Label htmlFor="farmer">Farmer</Label>
+                              <FormLabel htmlFor="farmer" className="cursor-pointer">Farmer</FormLabel>
                             </div>
                             <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="wholesaler" id="wholesaler" />
-                              <Label htmlFor="wholesaler" className="dark:text-gray-200">Wholesaler</Label>
+                              <RadioGroupItem value="vendor" id="vendor" />
+                              <FormLabel htmlFor="vendor" className="cursor-pointer">Vendor</FormLabel>
                             </div>
                           </RadioGroup>
                         </FormControl>
@@ -111,11 +158,24 @@ export default function Login() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" className="w-full bg-green-700 dark:bg-green-600 dark:hover:bg-green-500">Login</Button>
+
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-green-700 dark:bg-green-600 dark:hover:bg-green-500" 
+                    disabled={loading}
+                  >
+                    {loading ? "Logging in..." : "Login"}
+                  </Button>
+                  
                   <div className="mt-4 text-center">
                     <p className="text-sm text-gray-600 dark:text-gray-300">Don't have an account?</p>
                     <Link to="/register" className="block mt-2">
-                      <Button variant="outline" className="w-full border-green-700 text-green-700 hover:bg-green-50 dark:border-green-500 dark:text-green-400 dark:hover:bg-green-900/30">Register Now</Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full border-green-700 text-green-700 hover:bg-green-50 dark:border-green-500 dark:text-green-400 dark:hover:bg-green-900/30"
+                      >
+                        Register
+                      </Button>
                     </Link>
                   </div>
                 </form>
