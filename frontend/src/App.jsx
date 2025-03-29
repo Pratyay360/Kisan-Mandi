@@ -41,6 +41,9 @@ export const ToastProvider = ({ children }) => {
 };
 
 export const useToast = () => useContext(ToastContext);
+import CommunityForum from "./Pages/CommunityForum";
+import AskQuestionForm from "./Pages/AskQuestionForm";
+import FarmerProfile from "./Pages/FarmerProfile";
 
 // Create a Layout component that includes Navbar and Footer
 const Layout = () => (
@@ -91,6 +94,19 @@ const router = createBrowserRouter([
       { path: "products", element: <ProductPage /> }
     ]
   }
+{
+  path: "/",
+  element: <Layout />,
+  children: [
+    {path: "/", element: <Home />},
+    {path: "profile", element: <FarmerProfile />},
+    {path: "marketplace", element: <Marketplace />},
+    {path: "product-form", element: <ProductListForm />},
+    {path: "product-order", element: <ProductOrderPage />},
+    {path: "community-forum", element: <CommunityForum />},
+    {path: "ask-question-form", element: <AskQuestionForm />},
+  ],
+}
 ])
 
 export default function App() {
