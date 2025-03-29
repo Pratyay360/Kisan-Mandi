@@ -5,33 +5,25 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Clock, Users, BarChart2, Eye } from "lucide-react";
 // import { getAuctions } from "@/http/api";
 // import useTokenStore from "@/http/store";
-import {useProductStore} from "../http/store.js"
 
 export default function ProductList(
-  { auctionss, showManageOptions = false }
+  { auctions, showManageOptions = false }
 ) {
   // const role = useTokenStore((state) => state.role);
   // console.log(role);
+  // const [auctions, setAuctions] = useState([{
+  //   _id: "1",
+  //   product: "Wheat",
+  //   farmer: { name: "John Doe" },
+  //   category: "Grains",
+  //   currentBid: 1000,
+  //   highestBidder: ["User1", "User2"],
+  //   reserveMet: false,
+  //   timeLeft: 3600,
+  //   createdAt: new Date().toISOString(),
+  //   images: ["img/1.jpg"],
+  // }]);
 
-  const {fetchProducts} = useProductStore;
-
-  const [auctions, setAuctions] = useState([{
-    _id: "1",
-    product: "Wheat",
-    farmer: { name: "John Doe" },
-    category: "Grains",
-    currentBid: 1000,
-    highestBidder: ["User1", "User2"],
-    reserveMet: false,
-    timeLeft: 3600,
-    createdAt: new Date().toISOString(),
-    images: ["img/1.jpg"],
-  }]);
-  const [products,setProducts] = useState([]);
-  useEffect(() => {
-    const response = useProductStore.getState().fetchProducts();
-    console.log(response);
-  }, []);
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {auctions.map((auction) => (
@@ -67,7 +59,8 @@ export default function ProductList(
                 {auction.product}
               </h3>
               <p className="text-sm text-muted-foreground line-clamp-1">
-                by {auction.farmer.name}
+                {/* by {auction.farmer.name} */}
+                by Haresh Khan
               </p>
             </div>
 

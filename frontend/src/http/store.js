@@ -47,6 +47,7 @@ export const useProductStore = create(
         const response = await getAuctions(); // Change to your API
         console.log("UseProductStore: ", response);
         set({ products: response });
+        console.log("Products: ", get().products);
       } catch (error) {
         set({ error: error.message, loading: false });
       }

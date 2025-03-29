@@ -12,6 +12,7 @@ import {
 } from "@/src/components/ui/select";
 import { Plus, Search, Filter, ArrowUpDown } from "lucide-react";
 import AuctionList from "@/src/components/ProductList.jsx";
+import { getAuctions } from "../http/api";
 // import useTokenStore from "@/http/store";
 // import { getAuctions } from "@/http/api";
 
@@ -59,18 +60,18 @@ export default function Marketplace() {
     }
   }, [searchQuery, categoryFilter, sortOption, auctionList]);
 
-  //   useEffect(() => {
-  //     const fetchAuctions = async () => {
-  //       try {
-  //         const response = await getAuctions();
-  //         setAuctionList(response);
-  //         setFilteredAllAuctions(response);
-  //       } catch (error) {
-  //         console.error("Error fetching auctions:", error);
-  //       }
-  //     };
-  //     fetchAuctions();
-  //   }, []);
+    useEffect(() => {
+      const fetchAuctions = async () => {
+        try {
+          const response = await getAuctions();
+          setAuctionList(response);
+          setFilteredAllAuctions(response);
+        } catch (error) {
+          console.error("Error fetching auctions:", error);
+        }
+      };
+      fetchAuctions();
+    }, []);
 
   return (
     <div className="container mx-auto px-4 py-8 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
