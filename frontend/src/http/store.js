@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
+import { getAuctions } from './api';
 
 const useTokenStore = create(
   devtools(
@@ -35,4 +36,25 @@ const useTokenStore = create(
   )
 );
 
+export const useProductStore = create(
+  devtools((set, get) => ({
+    products: [],
+
+    fetchProducts: async () => {
+      if (get().products.length > 0) return; // Prevent refetching
+
+      try {
+        const response = await getAuctions(); // Change to your API
+        console.log("UseProductStore: ", response);
+        set({ products: response });
+      } catch (error) {
+        set({ error: error.message, loading: false });
+      }
+    },
+
+    clearProducts: () => set({ products: [] }), // Optional: Clear products when needed
+  }))
+);
+
 export default useTokenStore;
+

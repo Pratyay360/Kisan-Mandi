@@ -57,7 +57,7 @@ const createUser = async (req, res, next) =>{
             algorithm: "HS256",
         });
 
-        res.status(201).json({ token });
+        res.status(201).json({ token,name:newUser.name,role:newUser.role,userId:newUser._id });
     } catch (error) {
         console.error("Token Generation Error:", error);
         return next(createHttpError(500, "Error while creating token"));

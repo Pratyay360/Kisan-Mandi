@@ -1,8 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import * as zod from "zod";
+import { Button } from "@/src/components/ui/button";
 import {
   Form,
   FormControl,
@@ -10,23 +9,30 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import {logIn} from "../http/api.js"
+import useTokenStore from "../http/store.js";
+import { useMutation} from '@tanstack/react-query'
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useToast } from "@/src/App";
 
-const FormSchema = z.object({
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-  password: z.string().min(6, {
-    message: "Password must be at least 6 characters.",
-  }),
-  role: z.enum(["farmer", "wholesaler"]),
+const FormSchema = zod.object({
+  email: zod.string().email({ message: "Invalid email address" }),
+  password: zod.string().min(1, "Password is required"),
+  role: zod.enum(["farmer", "vendor"]),
 });
 
 export default function Login() {
+  const { showError, showSuccess } = useToast();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -36,9 +42,35 @@ export default function Login() {
     },
   });
 
+
+  const setToken = useTokenStore((state) => state.setToken);
+  const setRole = useTokenStore((state) => state.setRole);
+  const setName = useTokenStore((state) => state.setName);
+  const setUserId = useTokenStore((state) => state.setUserId);
+
+  const mutation = useMutation({
+    mutationFn: logIn,
+    onSuccess: (res) => {
+      console.log("login success", res.token);
+      //redirect to dashboard
+      setToken(res.token);
+      setRole(res.role);
+      setName(res.name);
+      setUserId(res.userId);
+      // auto reload the page after login
+      window.location.href = "/";
+    },
+  });
+
   function onSubmit(data) {
     console.log("Login successful:", data);
     // Add post-login logic here
+    // Implement your login logic here, e.g., authentication call
+    if (!data.email || !data.password) {
+      return alert("Please enter email and password");
+    }
+    mutation.mutate({ email: data.email, password:data.password });
+
   }
 
   return (
@@ -70,12 +102,18 @@ export default function Login() {
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input type="email" placeholder="Enter your email" {...field} />
+                          <Input 
+                            type="email" 
+                            placeholder="Email address" 
+                            {...field} 
+                            disabled={loading}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
+
                   <FormField
                     control={form.control}
                     name="password"
@@ -83,12 +121,18 @@ export default function Login() {
                       <FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                          <Input type="password" placeholder="Enter your password" {...field} />
+                          <Input 
+                            type="password" 
+                            placeholder="Password" 
+                            {...field} 
+                            disabled={loading}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
+
                   <FormField
                     control={form.control}
                     name="role"
@@ -96,14 +140,19 @@ export default function Login() {
                       <FormItem>
                         <FormLabel>I am a</FormLabel>
                         <FormControl>
-                          <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex space-x-4">
+                          <RadioGroup 
+                            className="flex space-x-4" 
+                            value={field.value}
+                            onValueChange={field.onChange}
+                            disabled={loading}
+                          >
                             <div className="flex items-center space-x-2">
                               <RadioGroupItem value="farmer" id="farmer" />
-                              <Label htmlFor="farmer">Farmer</Label>
+                              <FormLabel htmlFor="farmer" className="cursor-pointer">Farmer</FormLabel>
                             </div>
                             <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="wholesaler" id="wholesaler" />
-                              <Label htmlFor="wholesaler" className="dark:text-gray-200">Wholesaler</Label>
+                              <RadioGroupItem value="vendor" id="vendor" />
+                              <FormLabel htmlFor="vendor" className="cursor-pointer">Vendor</FormLabel>
                             </div>
                           </RadioGroup>
                         </FormControl>
@@ -111,11 +160,24 @@ export default function Login() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" className="w-full bg-green-700 dark:bg-green-600 dark:hover:bg-green-500">Login</Button>
+
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-green-700 dark:bg-green-600 dark:hover:bg-green-500" 
+                    disabled={loading}
+                  >
+                    {loading ? "Logging in..." : "Login"}
+                  </Button>
+                  
                   <div className="mt-4 text-center">
                     <p className="text-sm text-gray-600 dark:text-gray-300">Don't have an account?</p>
                     <Link to="/register" className="block mt-2">
-                      <Button variant="outline" className="w-full border-green-700 text-green-700 hover:bg-green-50 dark:border-green-500 dark:text-green-400 dark:hover:bg-green-900/30">Register Now</Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-full border-green-700 text-green-700 hover:bg-green-50 dark:border-green-500 dark:text-green-400 dark:hover:bg-green-900/30"
+                      >
+                        Register
+                      </Button>
                     </Link>
                   </div>
                 </form>
