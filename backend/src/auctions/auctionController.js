@@ -2,6 +2,7 @@ import createHttpError from "http-errors";
 import auctionModel from "../models/auctionModel.js";
 import userModel from "../models/userModel.js";
 import sendSMS from "../middlewares/twilioService.js";
+import js from "@eslint/js";
 async function createAuction(req, res, next) {
   const {
     product,
@@ -134,7 +135,7 @@ const updateAuctionStatus = async (req, res, next) => {
 
 const getMyAuctions = async (req, res, next) => {
   try {
-    const auctions = await auctionModel.find({ farmer: req.userId });
+    const auctions = await auctionModel.find({ farmerId: req.userId });
     res.json(auctions);
   } catch (error) {
     next(error);
@@ -149,7 +150,7 @@ async function deleteAuction(req, res, next) {
     if (!deletedAuction) {
       return res.status(404).json({ message: "Auction not found" });
     }
-    res.status(204).send();
+    res.status(204).send(json({ message: "Auction deleted successfully" }));
   } catch (error) {
     next(error);
   }

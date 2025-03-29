@@ -19,5 +19,5 @@ auctionRouter.put("/update/:id",authenticate,isOwner, updateAuction)
 auctionRouter.get('/:id',authenticate, getAuctionById)
 auctionRouter.put('/updatestatus/:id',authenticate, updateAuctionStatus)
 auctionRouter.get('/myauctions/:id',authenticate, getMyAuctions)
-auctionRouter.put('/delete/:id',authenticate, deleteAuction)
+auctionRouter.delete('/delete/:id',authenticate, deleteAuction)
 export default auctionRouter
