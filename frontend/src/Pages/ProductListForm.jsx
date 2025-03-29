@@ -190,6 +190,7 @@ const ProductListForm = () => {
   const onSubmit = async (data) => {
     const urls = await handleUpload();
     // console.log(11, urls);
+    // console.log(1,data.certifications)
 
     // Map form values to the payload structure expected by your API
     const auctionPayload = {
@@ -204,6 +205,7 @@ const ProductListForm = () => {
       minBidIncrement: Number.parseInt(data.bidIncrement),
       quantity: Number.parseInt(data.quantity),
       duration: Number.parseInt(data.auctionDuration, 10),
+      certifications: data.certifications,
       images: urls,
       // You can also include additional fields if needed (e.g., images)
     };
@@ -675,20 +677,20 @@ const ProductListForm = () => {
                                   Price & Duration Settings
                                 </h4>
                                 <p className="text-sm text-green-700">
-                                  Set your auction parameters to attract the
+                                  Set your Price to attract the
                                   right buyers and maximize your profits.
                                 </p>
                               </div>
                             </div>
                           </div>
 
-                          <div className="grid gap-6 md:grid-cols-2">
+                          <div className="grid gap-6 md:grid-cols-1">
                             <FormField
                               control={form.control}
                               name="startingBid"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Starting Bid (INR)*</FormLabel>
+                                  <FormLabel>Starting Price (INR)*</FormLabel>
                                   <FormControl>
                                     <div className="relative">
                                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium">
@@ -704,14 +706,14 @@ const ProductListForm = () => {
                                     </div>
                                   </FormControl>
                                   <FormDescription>
-                                    The minimum bid to start the auction
+                                    The minimum Price of your product
                                   </FormDescription>
                                   <FormMessage />
                                 </FormItem>
                               )}
                             />
 
-                            <FormField
+                            {/* <FormField
                               control={form.control}
                               name="bidIncrement"
                               render={({ field }) => (
@@ -740,7 +742,7 @@ const ProductListForm = () => {
                                   <FormMessage />
                                 </FormItem>
                               )}
-                            />
+                            /> */}
                           </div>
 
                           <FormField
@@ -748,7 +750,7 @@ const ProductListForm = () => {
                             name="auctionDuration"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Auction Duration (Days)*</FormLabel>
+                                <FormLabel> Duration (Days)*</FormLabel>
                                 <Select
                                   onValueChange={field.onChange}
                                   defaultValue={field.value}
@@ -768,7 +770,7 @@ const ProductListForm = () => {
                                   </SelectContent>
                                 </Select>
                                 <FormDescription>
-                                  How long your auction will be active
+                                  How long your product will be Listed
                                 </FormDescription>
                                 <FormMessage />
                               </FormItem>
@@ -780,10 +782,10 @@ const ProductListForm = () => {
                               <Info className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0" />
                               <div>
                                 <h4 className="font-medium text-amber-800">
-                                  Auction Fee Information
+                                  Platform Fee Information
                                 </h4>
                                 <p className="text-sm text-amber-700">
-                                  Our platform charges a 5% fee on the final
+                                  Our platform charges a 3% fee on the final
                                   selling price. This fee helps maintain the
                                   platform and provide services like secure
                                   payments, vendor verification, and dispute
