@@ -3,6 +3,7 @@ import cors from "cors"
 import globalErrorHandler from "./middlewares/globalErrorHandler.js";
 import userRouter from "./users/userRouter.js";
 import auctionRouter from "./auctions/auctionRouter.js";
+import paymentRouter from "./payment/paymentRouter.js";
 
 const app = express();
 
@@ -25,6 +26,8 @@ app.get("/", (req, res) => {
 
 app.use("/api/users",userRouter)
 app.use("/api/auctions",auctionRouter)
+app.use("/api/payment",paymentRouter)
+
 
 //global err handler
 app.use(globalErrorHandler)
