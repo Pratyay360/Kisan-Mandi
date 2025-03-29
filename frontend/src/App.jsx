@@ -1,10 +1,13 @@
-import { Button } from "@/src/components/ui/button"
-
+import Home from "./Pages/App"
+import Navbar from "./App/Navbar"
+import Footer from "./App/Footer"
 function App() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-svh">
-      <Button>Click me</Button>
-    </div>
+    <>
+    <Navbar />
+    <Home />
+    <Footer />
+    </>
   )
 }
 
