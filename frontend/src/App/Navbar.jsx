@@ -3,12 +3,9 @@ import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { ModeToggle } from "../components/mode-toggle";
 import { Sheet, SheetContent, SheetTrigger } from "../components/ui/sheet";
-import LoginModal from "../components/login-modal";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-
   const NavLink = ({ to, children }) => (
     <Link to={to} className="block cursor-pointer">
       <Button
@@ -23,12 +20,6 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b">
-      {/* Login Modal */}
-      <LoginModal
-        open={isLoginModalOpen}
-        onOpenChange={setIsLoginModalOpen}
-      />
-
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Website Logo */}
@@ -50,13 +41,14 @@ export default function Navbar() {
             </div>
             <div className="ml-4 flex items-center gap-2">
               <ModeToggle />
-              <Button
-                variant="default"
-                size="sm"
-                onClick={() => setIsLoginModalOpen(true)}
-              >
-                Login
-              </Button>
+              <Link to="/login">
+                <Button
+                  variant="default"
+                  size="sm"
+                >
+                  Login
+                </Button>
+              </Link>
             </div>
           </div>
 
@@ -86,15 +78,11 @@ export default function Navbar() {
                   </div>
                   <div className="mt-auto pt-6">
                     <ModeToggle />
-                    <Button
-                      className="w-full"
-                      onClick={() => {
-                        setIsOpen(false);
-                        setIsLoginModalOpen(true);
-                      }}
-                    >
+                    <Link to="/login">
+                    <Button className="w-full">
                       Login
                     </Button>
+                    </Link>
                   </div>
                 </div>
               </SheetContent>
