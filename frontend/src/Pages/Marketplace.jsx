@@ -77,18 +77,13 @@ export default function Marketplace() {
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold">
-              Marketplace
-            </h1>
+            <h1 className="text-2xl md:text-3xl font-bold">Marketplace</h1>
             <p className="text-muted-foreground">
               Browse and manage agricultural products
             </p>
           </div>
-          <Link to="/create-auction">
-            <Button
-              className="bg-green-600 hover:bg-green-700"
-              size="lg"
-            >
+          <Link to="/product-form">
+            <Button className="bg-green-600 hover:bg-green-700" size="lg">
               <Plus className="mr-2 h-4 w-4" /> List New Product
             </Button>
           </Link>

@@ -24,8 +24,9 @@ const CommunityHeader = () => {
           </div>
         </div>
         <div className="flex items-center gap-4">
-        <Button className="">Ask Question</Button>
-          
+          <Button>
+            <Link to="/ask-question-form">Ask Question</Link>{" "}
+          </Button>
         </div>
       </div>
     </nav>

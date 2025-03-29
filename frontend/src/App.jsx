@@ -18,6 +18,7 @@ import ProductOrderPage from "./Pages/ProductOrderPage";
 import Login from "./Pages/Login.jsx"
 import Register from "./Pages/Register.jsx"
 import CommunityForum from "./Pages/CommunityForum";
+import AskQuestionForm from "./Pages/AskQuestionForm";
 
 // Create a Layout component that includes Navbar and Footer
 const Layout = () => (
@@ -52,6 +53,8 @@ const router = createBrowserRouter([
     {path: "marketplace", element: <Marketplace />},
     {path: "product-form", element: <ProductListForm />},
     {path: "product-order", element: <ProductOrderPage />},
+    {path: "community-forum", element: <CommunityForum />},
+    {path: "ask-question-form", element: <AskQuestionForm />},
   ],
 }
 ])
