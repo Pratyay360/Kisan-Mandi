@@ -57,8 +57,7 @@ export default function Login() {
       setName(res.name);
       setUserId(res.userId);
       // auto reload the page after login
-      toast.success("login success");
-      navigate("/")
+      window.location.href = "/";
     },
   });
 

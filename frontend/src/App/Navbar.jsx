@@ -31,6 +31,7 @@ export default function Navbar() {
   function handleLogout() {
     localStorage.removeItem("user-store");
     setLogin(false);
+    window.location.href = "/";
   }
   const [isOpen, setIsOpen] = useState(false);
   const NavLink = ({ to, children }) => (
@@ -132,7 +133,7 @@ export default function Navbar() {
                     <ModeToggle />
                     {isLogin ? (
                       <>
-                      <Link to="/profile">
+                         <Link to="/profile">
                           <Button className="w-full">Login</Button>
                         </Link>
                         <Button className="w-full" variant="destructive" onClick={handleLogout}>
@@ -141,7 +142,7 @@ export default function Navbar() {
                       </>) :
                       (
                         <Link to="/login">
-                          <Button className="w-full">Login</Button>
+                          <Button className="w-full" variant="outline">Login</Button>
                         </Link>
                       )}
                   </div>
