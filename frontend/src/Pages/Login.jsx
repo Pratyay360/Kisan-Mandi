@@ -21,7 +21,7 @@ import { useMutation} from '@tanstack/react-query'
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useToast } from "@/src/App";
-
+import { toast } from "sonner";
 const FormSchema = zod.object({
   email: zod.string().email({ message: "Invalid email address" }),
   password: zod.string().min(1, "Password is required"),
@@ -51,7 +51,6 @@ export default function Login() {
   const mutation = useMutation({
     mutationFn: logIn,
     onSuccess: (res) => {
-      console.log("login success", res.token);
       //redirect to dashboard
       setToken(res.token);
       setRole(res.role);
@@ -63,14 +62,13 @@ export default function Login() {
   });
 
   function onSubmit(data) {
-    console.log("Login successful:", data);
+    // toast.success("Login successful:", data);
     // Add post-login logic here
     // Implement your login logic here, e.g., authentication call
     if (!data.email || !data.password) {
-      return alert("Please enter email and password");
+      toast.error("Please enter email and password");
     }
     mutation.mutate({ email: data.email, password:data.password });
-
   }
 
   return (

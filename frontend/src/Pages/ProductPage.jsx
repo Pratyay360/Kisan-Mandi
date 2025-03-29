@@ -3,25 +3,10 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const products = [
     {
-        id: 1,
-        image: "https://via.placeholder.com/150",
-        description: "A high-quality product that meets all your needs.",
-        price: "$49.99",
-        link: "https://www.amazon.com/"
+        link : "https://www.amazon.in/dp/B0C5KXQZ2F",
     },
     {
-        id: 2,
-        image: "https://via.placeholder.com/150",
-        description: "An innovative product with excellent features.",
-        price: "$79.99",
-        link: "https://www.amazon.com/"
-    },
-    {
-        id: 3,
-        image: "https://via.placeholder.com/150",
-        description: "Reliable and affordable, perfect for everyday use.",
-        price: "$29.99",
-        link: "https://www.amazon.com/"
+        link: "https://www.amazon.in/dp/B0C5KXQZ2F",
     }
 ];
 
