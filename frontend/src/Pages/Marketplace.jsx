@@ -11,12 +11,13 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { Plus, Search, Filter, ArrowUpDown } from "lucide-react";
-import AuctionList from "@/src/components/AuctionList.jsx";
+import AuctionList from "@/src/components/ProductList.jsx";
 // import useTokenStore from "@/http/store";
 // import { getAuctions } from "@/http/api";
 
-export default function Auctions() {
-  //   const navigate = useNavigate();
+
+export default function Marketplace() {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [sortOption, setSortOption] = useState("ending-soon");
@@ -78,10 +79,10 @@ export default function Auctions() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold">
-              Auction Marketplace
+              Marketplace
             </h1>
             <p className="text-muted-foreground">
-              Browse and manage agricultural product auctions
+              Browse and manage agricultural products
             </p>
           </div>
           <Link to="/create-auction">
@@ -89,7 +90,7 @@ export default function Auctions() {
               className="bg-green-600 hover:bg-green-700"
               size="lg"
             >
-              <Plus className="mr-2 h-4 w-4" /> Create New Auction
+              <Plus className="mr-2 h-4 w-4" /> List New Product
             </Button>
           </Link>
         </div>
