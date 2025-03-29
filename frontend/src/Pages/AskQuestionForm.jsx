@@ -39,7 +39,7 @@ const AskQuestionForm = () => {
   return (
     <Card className="w-full max-w-3xl mx-auto">
       <CardHeader>
-        <CardTitle className="text-2xl text-farm-green">
+        <CardTitle className="text-2xl text-farm-green ">
           Ask a Question
         </CardTitle>
       </CardHeader>
