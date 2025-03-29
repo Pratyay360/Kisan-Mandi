@@ -20,7 +20,7 @@ import useTokenStore from "../http/store";
 import { createUser } from "../http/api";
 import { useMutation } from "@tanstack/react-query";
 import { set } from "date-fns";
-
+import { toast } from "sonner";
 const formSchema = zod.object({
   name: zod.string().min(1, "Name is required"),
   email: zod.string().email({ message: "Invalid email address" }),
@@ -64,7 +64,8 @@ export default function Register() {
         setName(res.name);
         setUserId(res.userId);
         // auto reload the page after login
-        // window.location.href = "/";
+        toast.success("Registration successful");
+        navigate("/");
         setLoading(false);
       },
     });
@@ -74,10 +75,12 @@ export default function Register() {
     setLoading(true);
 
     if (!values.email || !values.password) {
-      return alert("Please enter email and password");
+      toast.error("Please enter email and password");
     }
     if(values.password !== values.confirmPassword){
-      // Show Toast Form password not matching
+      toast.error("Passwords do not match");
+      setLoading(false);
+      return;
     }
     else{
       mutation.mutate({ name:values.name,email: values.email,phone:values.phone ,password:values.password,role:values.role });

@@ -1,10 +1,37 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { ModeToggle } from "../components/mode-toggle";
 import { Sheet, SheetContent, SheetTrigger } from "../components/ui/sheet";
+import { useEffect } from "react";
+import { set } from "date-fns";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 
 export default function Navbar() {
+  // State to manage the mobile navigation menu
+  const navigate = useNavigate();
+  const [isLogin, setLogin] = useState(false);
+  useEffect(() => {
+    const token = localStorage.getItem("user-store");
+    if (token) {
+      setLogin(true);
+    } else {
+      setLogin(false);
+    }
+  }, []);
+  function handleLogout() {
+    localStorage.removeItem("user-store");
+    setLogin(false);
+  }
   const [isOpen, setIsOpen] = useState(false);
   const NavLink = ({ to, children }) => (
     <Link to={to} className="block cursor-pointer">
@@ -42,11 +69,27 @@ export default function Navbar() {
             </div>
             <div className="ml-4 flex items-center gap-2">
               <ModeToggle />
-              <Link to="/login">
-                <Button variant="default" size="sm">
-                  Login
-                </Button>
-              </Link>
+              {isLogin ? (
+                <>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <Avatar>
+                        <AvatarImage src="https://github.com/shadcn.png" />
+                        <AvatarFallback>CN</AvatarFallback>
+                      </Avatar>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem onClick={() => navigate("/profile")}>Profile</DropdownMenuItem>
+                      <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </>) :
+                (
+                  <Link to="/login">
+                    <Button variant="default" size="sm">
+                      Login
+                    </Button>
+                  </Link>)}
             </div>
           </div>
 
@@ -87,9 +130,20 @@ export default function Navbar() {
                   </div>
                   <div className="mt-auto pt-6">
                     <ModeToggle />
-                    <Link to="/login">
-                      <Button className="w-full">Login</Button>
-                    </Link>
+                    {isLogin ? (
+                      <>
+                      <Link to="/profile">
+                          <Button className="w-full">Login</Button>
+                        </Link>
+                        <Button className="w-full" variant="destructive" onClick={handleLogout}>
+                          Logout
+                        </Button>
+                      </>) :
+                      (
+                        <Link to="/login">
+                          <Button className="w-full">Login</Button>
+                        </Link>
+                      )}
                   </div>
                 </div>
               </SheetContent>
