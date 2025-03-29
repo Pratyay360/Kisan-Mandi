@@ -112,7 +112,7 @@ const updateAuctionStatus = async (req, res, next) => {
 
     await auction.save();
     console.log("Fetching farmer details...");
-    const user = await userModel.findById(auction.farmer);
+    const user = await userModel.findById(auction.farmerId);
 
     if (user) {
       try {
