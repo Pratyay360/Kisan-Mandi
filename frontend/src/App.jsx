@@ -86,25 +86,15 @@ const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
+      {path: "profile", element: <FarmerProfile />},
       { path: "marketplace", element: <Marketplace /> },
       { path: "product-form", element: <ProductListForm /> },
       { path: "product-order", element: <ProductOrderPage /> },
       { path: "contactus", element: <Message /> },
+      {path: "community-forum", element: <CommunityForum />},
+      {path: "ask-question-form", element: <AskQuestionForm />},
     ]
   }
-{
-  path: "/",
-  element: <Layout />,
-  children: [
-    {path: "/", element: <Home />},
-    {path: "profile", element: <FarmerProfile />},
-    {path: "marketplace", element: <Marketplace />},
-    {path: "product-form", element: <ProductListForm />},
-    {path: "product-order", element: <ProductOrderPage />},
-    {path: "community-forum", element: <CommunityForum />},
-    {path: "ask-question-form", element: <AskQuestionForm />},
-  ],
-}
 ])
 
 export default function App() {
