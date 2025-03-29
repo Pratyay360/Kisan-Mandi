@@ -95,7 +95,6 @@ const router = createBrowserRouter([
       { path: "products", element: <ProductPage /> },
       {path: "profile", element: <FarmerProfile />},
       {path: "product-form", element: <ProductListForm />},
-      {path: "product-order", element: <ProductOrderPage />},
       {path: "community-forum", element: <CommunityForum />},
       {path: "ask-question-form", element: <AskQuestionForm />},
     ]
