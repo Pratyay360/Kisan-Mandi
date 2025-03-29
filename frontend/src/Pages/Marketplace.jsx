@@ -17,7 +17,6 @@ import AuctionList from "@/src/components/ProductList.jsx";
 
 
 export default function Marketplace() {
-  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [sortOption, setSortOption] = useState("ending-soon");
