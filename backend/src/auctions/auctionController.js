@@ -140,4 +140,20 @@ const getMyAuctions = async (req, res, next) => {
     next(error);
   }
 }
-export { createAuction, updateAuction, getAuctions, isOwner, getAuctionById, updateAuctionStatus, getMyAuctions };
+
+
+
+async function deleteAuction(req, res, next) {
+  try {
+    const deletedAuction = await auctionModel.findByIdAndDelete(req.params.id);
+    if (!deletedAuction) {
+      return res.status(404).json({ message: "Auction not found" });
+    }
+    res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+}
+
+
+export { createAuction, updateAuction, getAuctions, isOwner, getAuctionById, updateAuctionStatus, getMyAuctions, deleteAuction };
