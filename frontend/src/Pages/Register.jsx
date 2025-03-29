@@ -16,6 +16,10 @@ import { RadioGroup, RadioGroupItem } from "@/src/components/ui/radio-group";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useToast } from "@/src/App";
+import useTokenStore from "../http/store";
+import { createUser } from "../http/api";
+import { useMutation } from "@tanstack/react-query";
+import { set } from "date-fns";
 
 const formSchema = zod.object({
   name: zod.string().min(1, "Name is required"),
@@ -46,35 +50,39 @@ export default function Register() {
     }
   });
 
+  const setToken = useTokenStore((state) => state.setToken);
+  const setRole = useTokenStore((state) => state.setRole);
+  const setName = useTokenStore((state) => state.setName);
+  const setUserId = useTokenStore((state) => state.setUserId);
+  const mutation = useMutation({
+      mutationFn: createUser,
+      onSuccess: (res) => {
+        console.log("login success", res.token);
+        //redirect to dashboard
+        setToken(res.token);
+        setRole(res.role);
+        setName(res.name);
+        setUserId(res.userId);
+        // auto reload the page after login
+        // window.location.href = "/";
+        setLoading(false);
+      },
+    });
+
   async function onSubmit(values) {
+    console.log("Form values:", values);
     setLoading(true);
-    try {
-      // API call for registration
-      const registerData = { ...values };
-      delete registerData.confirmPassword;
-      
-      const response = await fetch("http://localhost:5000/api/users/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(registerData),
-      });
-      
-      const result = await response.json();
-      
-      if (!response.ok) {
-        showError(result.message || "Registration failed");
-        return;
-      }
-      
-      showSuccess("Registration successful! Please login.");
-      navigate('/login');
-    } catch (error) {
-      showError(error.message || "Registration failed");
-    } finally {
-      setLoading(false);
+
+    if (!values.email || !values.password) {
+      return alert("Please enter email and password");
     }
+    if(values.password !== values.confirmPassword){
+      // Show Toast Form password not matching
+    }
+    else{
+      mutation.mutate({ name:values.name,email: values.email,phone:values.phone ,password:values.password,role:values.role });
+    }
+   
   }
 
   return (
