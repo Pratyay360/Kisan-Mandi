@@ -22,7 +22,7 @@ import { createContext, useContext } from "react";
 import { toast } from "sonner";
 import Message from "./Pages/Message";
 import ProductPage from "./Pages/ProductPage";
-
+import AboutUs from "./Pages/AboutUs";
 // Create a toast context for application-wide error notifications
 export const ToastContext = createContext({
   showError: (message) => {},
@@ -85,28 +85,22 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { path: "/", element: <Home /> },
+      { path: "aboutus", element: <AboutUs /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
       { path: "marketplace", element: <Marketplace /> },
       { path: "product-form", element: <ProductListForm /> },
       { path: "product-order", element: <ProductOrderPage /> },
       { path: "contactus", element: <Message /> },
-      { path: "products", element: <ProductPage /> }
+      { path: "products", element: <ProductPage /> },
+      {path: "profile", element: <FarmerProfile />},
+      {path: "product-form", element: <ProductListForm />},
+      {path: "product-order", element: <ProductOrderPage />},
+      {path: "community-forum", element: <CommunityForum />},
+      {path: "ask-question-form", element: <AskQuestionForm />},
     ]
   }
-{
-  path: "/",
-  element: <Layout />,
-  children: [
-    {path: "/", element: <Home />},
-    {path: "profile", element: <FarmerProfile />},
-    {path: "marketplace", element: <Marketplace />},
-    {path: "product-form", element: <ProductListForm />},
-    {path: "product-order", element: <ProductOrderPage />},
-    {path: "community-forum", element: <CommunityForum />},
-    {path: "ask-question-form", element: <AskQuestionForm />},
-  ],
-}
+  
 ])
 
 export default function App() {

@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { FaLinkedin, FaTwitter, FaGithub } from "react-icons/fa";
+import { Linkedin, Twitter, Github } from "lucide-react";
 
 const teamMembers = [
     { 
@@ -61,13 +61,13 @@ export default function AboutUs() {
                             <p className="text-sm text-muted-foreground">{member.role}</p>
                             <div className="flex space-x-3 mt-2">
                                 <a href={member.social.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-400">
-                                    <FaLinkedin size={20} />
+                                    <Linkedin size={20} />
                                 </a>
                                 <a href={member.social.twitter} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
-                                    <FaTwitter size={20} />
+                                    <Twitter size={20} />
                                 </a>
                                 <a href={member.social.github} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-400">
-                                    <FaGithub size={20} />
+                                    <Github size={20} />
                                 </a>
                             </div>
                         </CardContent>
