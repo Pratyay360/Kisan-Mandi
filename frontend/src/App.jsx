@@ -15,6 +15,7 @@ import Marketplace from "./Pages/Marketplace"
 import ProductListForm from "./Pages/ProductListForm"
 import { ErrorBoundary } from "react-error-boundary";
 import ProductOrderPage from "./Pages/ProductOrderPage";
+import CommunityForum from "./Pages/CommunityForum";
 
 // Create a Layout component that includes Navbar and Footer
 const Layout = () => (
@@ -49,6 +50,7 @@ const router = createBrowserRouter([
     {path: "marketplace", element: <Marketplace />},
     {path: "product-form", element: <ProductListForm />},
     {path: "product-order", element: <ProductOrderPage />},
+    {path: "community-forum", element: <CommunityForum />},
   ],
 }
 ])
