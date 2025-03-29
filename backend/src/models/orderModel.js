@@ -31,6 +31,12 @@ const orderSchema = new mongoose.Schema({
         enum: ["pending", "success", "failed"],
         default: "pending",
     },
-});
+
+   
+},
+{
+    timestamps: true,    
+}
+);
 
 export default mongoose.model("Order", orderSchema);
