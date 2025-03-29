@@ -33,7 +33,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-4">
             <div className="flex items-center gap-2">
               <NavLink to="/">Home</NavLink>
-              <NavLink to="/auctionlist">Marketplace</NavLink>
+              <NavLink to="/marketplace">Marketplace</NavLink>
               <NavLink to="/products">Farm Products</NavLink>
               {/* <NavLink to="/services">Services</NavLink> */}
               <NavLink to="/aboutus">About Us</NavLink>

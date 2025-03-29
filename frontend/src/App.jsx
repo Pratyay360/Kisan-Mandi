@@ -11,10 +11,9 @@ import {
   Route,
   BrowserRouter
 } from "react-router-dom";
-import Marketplace from "./pages/Marketplace.jsx"
-import ProductListForm from "./pages/ProductListForm.jsx";
+import Marketplace from "./Pages/Marketplace"
+import ProductListForm from "./Pages/ProductListForm"
 import { ErrorBoundary } from "react-error-boundary";
-
 
 // Create a Layout component that includes Navbar and Footer
 const Layout = () => (
