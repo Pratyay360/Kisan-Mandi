@@ -13,7 +13,8 @@ import {
 } from "react-router-dom";
 import Auctions from "./Pages/Auctions.jsx"
 import { ErrorBoundary } from "react-error-boundary"
-
+import Login from "./Pages/Login.jsx"
+import Register from "./Pages/Register.jsx"
 // Create a Layout component that includes Navbar and Footer
 const Layout = () => (
   <>
@@ -46,12 +47,14 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
       { path: "auctions", element: <Auctions /> },
+      { path: "login", element: <Login/> },
+      {path: "register", element: <Register/>},
       // Add other routes as needed
     ],
   }
 ])
 
-function App() {
+export default function App() {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <RouterProvider router={router} />
@@ -59,4 +62,3 @@ function App() {
   );
 }
 
-export default App
