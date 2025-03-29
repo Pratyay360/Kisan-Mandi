@@ -5,7 +5,7 @@ const _config = {
     mongoString: process.env.MONGO_STRING,
      port: process.env.PORT,
      nodeEnv: process.env.NODE_ENV,
-//   jwtSecret: process.env.JWT_SECRET,
+     jwtSecret: process.env.JWT_SECRET,
 //   twilioSid: process.env.TWILIO_ACCOUNT_SID,
 //   twilioAuthToken: process.env.TWILIO_AUTH_TOKEN,
 //   twilioNumber: process.env.SANDBOX_NUMBER
