@@ -1,8 +1,10 @@
 import express from "express";
-import auctionController from "../controllers/auctionController.js";
+//import auctionController from "../controllers/auctionController.js"
+import { createAuction,getAuctions,isOwner,updateAuction,getAuctionById,getMyAuctions,updateAuctionStatus } from "./auctionController.js";
+
 import authenticate from "../middlewares/auth.js";
 
-const router = express.Router();
+const auctionRouter =  express.Router();
 
 auctionRouter.post("/create",authenticate, createAuction)
 auctionRouter.get("/",authenticate, getAuctions)

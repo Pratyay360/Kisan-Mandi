@@ -31,7 +31,7 @@ async function createAuction(req, res, next) {
   try {
     const newAuction = await auctionModel.create({
       ...req.body,
-      farmer: req.userId,
+      farmerId: req.userId,
       currentBid: startingBid,
     });
     res.status(201).json(newAuction);
