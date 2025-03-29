@@ -152,33 +152,6 @@ const CommunityForum = () => {
           </TabsContent>
         </Tabs>
       </main>
-      <footer className="border-t border-farm-brown-light/20 bg-muted/50 py-6">
-        <div className="container flex flex-col md:flex-row items-center justify-between gap-4 px-4 md:px-6">
-          <p className="text-sm text-muted-foreground">
-            © 2023 FarmHelp Community. All rights reserved.
-          </p>
-          <div className="flex gap-4">
-            <a
-              href="#"
-              className="text-sm text-muted-foreground hover:underline"
-            >
-              Terms
-            </a>
-            <a
-              href="#"
-              className="text-sm text-muted-foreground hover:underline"
-            >
-              Privacy
-            </a>
-            <a
-              href="#"
-              className="text-sm text-muted-foreground hover:underline"
-            >
-              Contact
-            </a>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };

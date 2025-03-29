@@ -243,14 +243,14 @@ const ProductOrderPage = () => {
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <div>
-                        <p className="text-sm text-muted-foreground">Current Bid</p>
+                        <p className="text-sm text-muted-foreground">Current Price</p>
                         <p className="text-3xl font-bold">
                           ₹{currentBid?.toLocaleString()}
                         </p>
                       </div>
                       <div className="text-right">
                         <p className="text-sm text-muted-foreground">
-                          Starting Bid
+                          Starting Price
                         </p>
                         <p className="text-xl">
                           ₹{auction?.startingBid.toLocaleString()}
@@ -261,7 +261,7 @@ const ProductOrderPage = () => {
                     <div className="flex items-center gap-2 text-amber-600">
                       <Clock className="h-4 w-4" />
                       <span className="text-sm font-medium">
-                        Auction ending in:
+                        Trade ending in:
                       </span>
                     </div>
     
@@ -269,7 +269,7 @@ const ProductOrderPage = () => {
                       <CountdownTimer initialTimeInMs={timeLeft} />
                     ) : (
                       <p className="text-sm text-muted-foreground">
-                        Auction has ended
+                        Trade has ended
                       </p>
                     )}
     
@@ -279,17 +279,13 @@ const ProductOrderPage = () => {
                       }
                       className="h-2"
                     />
-    
-                    <p className="text-sm text-muted-foreground">
-                      <span className="font-medium">{bids?.length} bids</span> so
-                      far. Minimum increment: ₹{auction?.minBidIncrement}
-                    </p>
+  
                   </div>
     
                   <form onSubmit={handleBidSubmit} className="space-y-4">
                     <div>
                       <label htmlFor="bid-amount" className="text-sm font-medium">
-                        Your Bid (INR)
+                        Your Price (INR)
                       </label>
                       <div className="relative mt-1">
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
@@ -310,13 +306,9 @@ const ProductOrderPage = () => {
     
                     <Button type="submit" className="w-full" size="lg">
                       <ArrowUp className="h-4 w-4 mr-2" />
-                      Place Bid
+                      Your Offer
                     </Button>
     
-                    <p className="text-xs text-muted-foreground text-center">
-                      By placing a bid, you agree to the terms and conditions of
-                      this auction.
-                    </p>
                   </form>
                 </CardContent>
               </Card>
@@ -326,7 +318,7 @@ const ProductOrderPage = () => {
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-semibold flex items-center">
                       <Users className="h-4 w-4 mr-2" />
-                      Recent Bidders
+                      Applicants
                     </h3>
                     <Button
                       variant="ghost"
