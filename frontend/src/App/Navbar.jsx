@@ -35,6 +35,7 @@ export default function Navbar() {
               <NavLink to="/">Home</NavLink>
               <NavLink to="/marketplace">Marketplace</NavLink>
               <NavLink to="/products">Farm Products</NavLink>
+              <NavLink to="/community-forum">Community</NavLink>
               {/* <NavLink to="/services">Services</NavLink> */}
               <NavLink to="/aboutus">About Us</NavLink>
               <NavLink to="/contactus">Contact</NavLink>
@@ -42,10 +43,7 @@ export default function Navbar() {
             <div className="ml-4 flex items-center gap-2">
               <ModeToggle />
               <Link to="/login">
-                <Button
-                  variant="default"
-                  size="sm"
-                >
+                <Button variant="default" size="sm">
                   Login
                 </Button>
               </Link>
@@ -58,7 +56,18 @@ export default function Navbar() {
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <Button variant="outline" size="icon" className="rounded-full">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-5 w-5"
+                  >
                     <line x1="4" x2="20" y1="12" y2="12"></line>
                     <line x1="4" x2="20" y1="6" y2="6"></line>
                     <line x1="4" x2="20" y1="18" y2="18"></line>
@@ -79,9 +88,7 @@ export default function Navbar() {
                   <div className="mt-auto pt-6">
                     <ModeToggle />
                     <Link to="/login">
-                    <Button className="w-full">
-                      Login
-                    </Button>
+                      <Button className="w-full">Login</Button>
                     </Link>
                   </div>
                 </div>
