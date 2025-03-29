@@ -95,15 +95,11 @@ const router = createBrowserRouter([
       { path: "product-order", element: <ProductOrderPage /> },
       { path: "contactus", element: <Message /> },
       { path: "products", element: <ProductPage /> },
-      {path: "profile", element: <FarmerProfile />},
-      {path: "product-form", element: <ProductListForm />},
-      {path: "product-order", element: <ProductOrderPage />},
-      {path: "community-forum", element: <CommunityForum />},
-      {path: "ask-question-form", element: <AskQuestionForm />},
-    ]
-  }
-  
-])
+      { path: "community-forum", element: <CommunityForum /> },
+      { path: "ask-question-form", element: <AskQuestionForm /> },
+    ],
+  },
+]);
 
 export default function App() {
   return (

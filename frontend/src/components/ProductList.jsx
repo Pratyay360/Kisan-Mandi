@@ -6,9 +6,7 @@ import { Clock, Users, BarChart2, Eye } from "lucide-react";
 // import { getAuctions } from "@/http/api";
 // import useTokenStore from "@/http/store";
 
-export default function ProductList(
-  { auctions, showManageOptions = false }
-) {
+export default function ProductList({ auctions, showManageOptions = false }) {
   // const role = useTokenStore((state) => state.role);
   // console.log(role);
   // const [auctions, setAuctions] = useState([{
@@ -59,8 +57,7 @@ export default function ProductList(
                 {auction.product}
               </h3>
               <p className="text-sm text-muted-foreground line-clamp-1">
-                {/* by {auction.farmer.name} */}
-                by Haresh Khan
+                by {auction.farmerId.name}
               </p>
             </div>
 
