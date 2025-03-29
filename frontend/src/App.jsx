@@ -21,6 +21,7 @@ import { Toaster } from "@/src/components/ui/sonner";
 import { createContext, useContext } from "react";
 import { toast } from "sonner";
 import Message from "./Pages/Message";
+import ProductPage from "./Pages/ProductPage";
 
 // Create a toast context for application-wide error notifications
 export const ToastContext = createContext({
@@ -87,6 +88,7 @@ const router = createBrowserRouter([
       { path: "product-form", element: <ProductListForm /> },
       { path: "product-order", element: <ProductOrderPage /> },
       { path: "contactus", element: <Message /> },
+      { path: "products", element: <ProductPage /> }
     ]
   }
 ])

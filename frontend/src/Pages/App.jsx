@@ -13,18 +13,14 @@ export default function Home() {
         const handleMouseMove = (e) => {
             if (!imageRef.current) return;
             
-            // Calculate mouse position relative to the center of the screen
-            const x = (e.clientX / window.innerWidth - 0.5) * 20; // Doubled range for more movement
-            const y = (e.clientY / window.innerHeight - 0.5) * 20; // Doubled range for more movement
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
             
-            // Add subtle floating animation
-            const floatY = Math.sin(Date.now() / 1000) * 5; // Subtle up and down floating
-            const floatX = Math.sin(Date.now() / 1500) * 3; // Subtle left and right floating
+            const floatY = Math.sin(Date.now() / 1000) * 5;
+            const floatX = Math.sin(Date.now() / 1500) * 3;
             
-            // More dramatic movement when hovered
             const hoverIntensity = isHovered ? 1.5 : 1;
             
-            // Apply the transformation with enhanced effects
             imageRef.current.style.transform = `
                 perspective(1000px) 
                 rotateY(${x * hoverIntensity}deg) 
@@ -36,7 +32,6 @@ export default function Home() {
             imageRef.current.style.transition = "transform 0.1s ease-out";
         };
         
-        // Apply a continuous animation effect even without mouse movement
         const animationInterval = setInterval(() => {
             if (!imageRef.current) return;
             
@@ -67,21 +62,21 @@ export default function Home() {
          <div className="bg-green-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-8 md:px-6 lg:px-20">
       {/* Header Section */}
       <header className="container mx-auto py-10 text-center">
-        <span className="bg-green-200 dark:bg-green-900 text-green-800 dark:text-green-200 px-4 py-1 rounded-full text-sm">#1 Marketplace for Modern Farming</span>
+        <span className="bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-100 px-4 py-1 rounded-full text-sm font-medium shadow-sm">#1 Marketplace for Modern Farming</span>
         
         <div className="flex flex-col md:flex-row items-center justify-center mt-4 gap-6">
           <div className="md:text-left">
-            <h1 className="text-4xl font-bold">Connecting Farmers with Highest-Bidding Wholesalers</h1>
-            <p className="mt-4 text-lg dark:text-gray-300">A premium marketplace where farmers showcase their quality produce and wholesalers bid for the best agricultural products.</p>
+            <h1 className="text-4xl font-bold dark:text-white">Connecting Farmers with Highest Paying Wholesalers</h1>
+            <p className="mt-4 text-lg dark:text-gray-200">A premium marketplace where farmers showcase their quality produce and wholesalers pay for the best agricultural products.</p>
             <div className="mt-6 flex md:justify-start justify-center gap-4">
               <Link to="/register">
-              <Button>Start Selling Your Produce</Button>
+              <Button className="bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600 text-white">Start Selling Your Produce</Button>
               </Link>
               <Link to="/marketplace">
-              <Button variant="outline" className="dark:border-green-700 dark:text-green-400 dark:hover:bg-green-950">Discover Products</Button>
+              <Button variant="outline" className="border-green-600 text-green-700 hover:bg-green-50 dark:border-green-500 dark:text-green-300 dark:hover:bg-green-900/30">Discover Products</Button>
               </Link>
             </div>
-            <p className="mt-4 text-sm dark:text-gray-400">🌱 1,000+ farmers already on our platform</p>
+            <p className="mt-4 text-sm dark:text-gray-300">🌱 1,000+ farmers already on our platform</p>
           </div>
           <div className="mt-6 md:mt-0">
             <div className="relative overflow-visible group">
@@ -89,12 +84,12 @@ export default function Home() {
                 ref={imageRef}
                 src="img/home.jpg" 
                 alt="Farmers Market" 
-                className="rounded-lg shadow-md max-w-sm md:max-w-md lg:max-w-lg dark:shadow-emerald-900/20 hover:shadow-xl transition-all duration-300"
+                className="rounded-lg shadow-md max-w-sm md:max-w-md lg:max-w-lg dark:shadow-emerald-500/10 dark:border dark:border-gray-700 hover:shadow-xl dark:hover:shadow-emerald-500/20 transition-all duration-300"
                 style={{ transformStyle: 'preserve-3d', transformOrigin: 'center center' }}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
               />
-              <div className="absolute inset-0 group-hover:bg-green-500/5 dark:group-hover:bg-emerald-600/10 rounded-lg transition-all duration-300"></div>
+              <div className="absolute inset-0 group-hover:bg-green-500/5 dark:group-hover:bg-emerald-400/10 rounded-lg transition-all duration-300"></div>
             </div>
           </div>
         </div>
@@ -103,44 +98,53 @@ export default function Home() {
       {/* Features Section */}
       <section className="container mx-auto py-16 text-center">
         <h2 className="text-3xl font-bold dark:text-white">Transform How You Sell Your Agricultural Products</h2>
-        <p className="mt-4 text-lg dark:text-gray-300">Our sophisticated platform connects farmers directly with wholesalers through a transparent bidding system.</p>
+        <p className="mt-4 text-lg dark:text-gray-200">Our sophisticated platform connects farmers directly with wholesalers through a transparent platform.</p>
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
+          <Card className="dark:bg-gray-800 dark:border-gray-700 dark:shadow-md dark:shadow-emerald-900/5 hover:shadow-lg transition-all duration-200">
             <CardContent className="p-6">
-              <h3 className="text-xl font-semibold dark:text-white">Competitive Bidding</h3>
-              <p className="mt-2 dark:text-gray-300">Let wholesalers compete for your products through our transparent auction system.</p>
+              <h3 className="text-xl font-semibold dark:text-white flex items-center gap-2">
+                <ShieldCheck className="h-5 w-5 text-green-600 dark:text-green-400" />
+                Competitive Pricing
+              </h3>
+              <p className="mt-2 dark:text-gray-200">Let wholesalers compete for your products through our transparent open market operation.</p>
             </CardContent>
           </Card>
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
+          <Card className="dark:bg-gray-800 dark:border-gray-700 dark:shadow-md dark:shadow-emerald-900/5 hover:shadow-lg transition-all duration-200">
             <CardContent className="p-6">
-              <h3 className="text-xl font-semibold dark:text-white">Quality Verification</h3>
-              <p className="mt-2 dark:text-gray-300">Our strict verification process ensures buyers trust your product claims.</p>
+              <h3 className="text-xl font-semibold dark:text-white flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+                Quality Verification
+              </h3>
+              <p className="mt-2 dark:text-gray-200">Our strict verification process ensures buyers trust your product claims.</p>
             </CardContent>
           </Card>
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
+          <Card className="dark:bg-gray-800 dark:border-gray-700 dark:shadow-md dark:shadow-emerald-900/5 hover:shadow-lg transition-all duration-200">
             <CardContent className="p-6">
-              <h3 className="text-xl font-semibold dark:text-white">Market Insights</h3>
-              <p className="mt-2 dark:text-gray-300">Access real-time analytics and market trends to make informed decisions.</p>
+              <h3 className="text-xl font-semibold dark:text-white flex items-center gap-2">
+                <BarChart className="h-5 w-5 text-green-600 dark:text-green-400" />
+                Market Insights
+              </h3>
+              <p className="mt-2 dark:text-gray-200">Access real-time analytics and market trends to make informed decisions.</p>
             </CardContent>
           </Card>
         </div>
       </section>
 
       {/* How It Works Section */}
-      <section className="container mx-auto py-16 text-center">
-        <h2 className="text-3xl font-bold dark:text-white">How Our Bidding System Works</h2>
+      <section className="container mx-auto py-16 text-center bg-green-100/50 dark:bg-gray-800/50 rounded-xl">
+        <h2 className="text-3xl font-bold dark:text-white">How Our Market Place Works</h2>
         <div className="mt-6 flex flex-col md:flex-row justify-center gap-8">
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
             <CheckCircle className="h-10 w-10 text-green-600 dark:text-green-400" />
-            <p className="mt-2 font-medium dark:text-gray-200">Create Your Account</p>
+            <p className="mt-2 font-medium dark:text-white">Create Your Account</p>
           </div>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
             <TrendingUp className="h-10 w-10 text-green-600 dark:text-green-400" />
-            <p className="mt-2 font-medium dark:text-gray-200">List Your Products</p>
+            <p className="mt-2 font-medium dark:text-white">List Your Products</p>
           </div>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
             <ShieldCheck className="h-10 w-10 text-green-600 dark:text-green-400" />
-            <p className="mt-2 font-medium dark:text-gray-200">Receive & Accept Bids</p>
+            <p className="mt-2 font-medium dark:text-white">Receive & Accept </p>
           </div>
         </div>
       </section>
