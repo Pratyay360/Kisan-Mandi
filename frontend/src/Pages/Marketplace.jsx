@@ -13,8 +13,8 @@ import {
 import { Plus, Search, Filter, ArrowUpDown } from "lucide-react";
 import AuctionList from "@/src/components/ProductList.jsx";
 import { getAuctions } from "../http/api";
-// import useTokenStore from "@/http/store";
-// import { getAuctions } from "@/http/api";
+import useTokenStore from "@/src/http/store";
+// import { getAuctions } from "@/src/http/api";
 
 export default function Marketplace() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,7 +29,8 @@ export default function Marketplace() {
     return auctions.filter((auction) => {
       const matchesSearch =
         auction.product.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        auction.farmer.name.toLowerCase().includes(searchQuery.toLowerCase());
+        auction.farmerId.name.toLowerCase().includes(searchQuery.toLowerCase())||
+        auction.pickupLocation.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory =
         categoryFilter === "all" || auction.category === categoryFilter;
       return matchesSearch && matchesCategory;
