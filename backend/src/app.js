@@ -1,6 +1,7 @@
 import express from "express";
 import {config} from "./config/config.js"
 import cors from "cors"
+import globalErrorHandler from "./middlewares/globalErrorHandler.js";
 // import userRouter from "./users/userRouter.js";
 // import auctionRouter from "./auctions/auctionRouter.js";
 
@@ -22,4 +23,6 @@ app.get("/", (req, res) => {
     res.json({message: "hello"});
 });
 
+
+app.use(globalErrorHandler)
 export default app
