@@ -1,3 +1,6 @@
+import Home from "./Pages/App"
+import Navbar from "./App/Navbar"
+import Footer from "./App/Footer"
 import { Button } from "@/src/components/ui/button"
 import {
   createBrowserRouter,
@@ -32,6 +35,9 @@ function App() {
   return (
     <>
       <RouterProvider router={router} />
+      <Navbar />
+      <Home />
+      <Footer />
     </>
   );
 }
