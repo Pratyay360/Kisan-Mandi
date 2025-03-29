@@ -114,13 +114,7 @@ const auctionSchema = new mongoose.Schema(
     ],
 
     certifications: {
-      type: String,
-      enum: [
-            "certified organic",
-            "non gmo",
-            "fair trade",
-            "pesticide free"
-      ],
+      type: Array,
     //   default: "non gmo",
     }
 

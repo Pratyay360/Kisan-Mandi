@@ -93,7 +93,7 @@ const router = createBrowserRouter([
       { path: "register", element: <Register /> },
       { path: "marketplace", element: <Marketplace /> },
       { path: "product-form", element: <ProductListForm /> },
-      { path: "product-order", element: <ProductOrderPage /> },
+      { path: "product-order/:id", element: <ProductOrderPage /> },
       { path: "contactus", element: <Message /> },
       { path: "products", element: <ProductPage /> },
       { path: "community-forum", element: <CommunityForum /> },
