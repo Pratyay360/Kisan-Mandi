@@ -1,7 +1,7 @@
 import Home from "./Pages/App"
 import Navbar from "./App/Navbar"
 import Footer from "./App/Footer"
-function App() {
+export default function App() {
   return (
     <>
     <Navbar />
@@ -10,5 +10,3 @@ function App() {
     </>
   )
 }
-
-export default App
