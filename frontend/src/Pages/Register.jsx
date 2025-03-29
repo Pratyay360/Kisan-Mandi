@@ -1,20 +1,33 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as zod from "zod";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Button } from "@/src/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/src/components/ui/form";
+import { Input } from "@/src/components/ui/input";
+import { Card, CardContent } from "@/src/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/src/components/ui/radio-group";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useToast } from "@/src/App";
+import useTokenStore from "../http/store";
+import { createUser } from "../http/api";
+import { useMutation } from "@tanstack/react-query";
+import { set } from "date-fns";
 
 const formSchema = zod.object({
-  name: zod.string().min(1, { message: "Name is required" }),
+  name: zod.string().min(1, "Name is required"),
   email: zod.string().email({ message: "Invalid email address" }),
-  phone: zod.string().regex(/^\d{10}$/, { message: "Phone number must be 10 digits" }),
-  password: zod.string().min(6, { message: "Password must be at least 6 characters" }),
-  confirmPassword: zod.string().min(1, "Confirm Password is required")
+  phone: zod.string().min(10, "Phone number must be at least 10 digits"),
+  password: zod.string().min(6, "Password must be at least 6 characters"),
+  confirmPassword: zod.string().min(1, "Confirm Password is required"),
+  role: zod.enum(["farmer", "vendor"]),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords do not match",
   path: ["confirmPassword"]
@@ -23,6 +36,7 @@ const formSchema = zod.object({
 export default function Register() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const { showError, showSuccess } = useToast();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -31,26 +45,44 @@ export default function Register() {
       email: '',
       phone: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      role: 'farmer'
     }
   });
 
+  const setToken = useTokenStore((state) => state.setToken);
+  const setRole = useTokenStore((state) => state.setRole);
+  const setName = useTokenStore((state) => state.setName);
+  const setUserId = useTokenStore((state) => state.setUserId);
+  const mutation = useMutation({
+      mutationFn: createUser,
+      onSuccess: (res) => {
+        console.log("login success", res.token);
+        //redirect to dashboard
+        setToken(res.token);
+        setRole(res.role);
+        setName(res.name);
+        setUserId(res.userId);
+        // auto reload the page after login
+        // window.location.href = "/";
+        setLoading(false);
+      },
+    });
+
   async function onSubmit(values) {
+    console.log("Form values:", values);
     setLoading(true);
-    try {
-      // Simulated API call
-      console.log("Registration data:", values);
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      navigate('/login');
-    } catch (error) {
-      console.error("Registration error:", error);
-      form.setError('root', {
-        type: 'manual',
-        message: 'Registration failed. Please try again.'
-      });
-    } finally {
-      setLoading(false);
+
+    if (!values.email || !values.password) {
+      return alert("Please enter email and password");
     }
+    if(values.password !== values.confirmPassword){
+      // Show Toast Form password not matching
+    }
+    else{
+      mutation.mutate({ name:values.name,email: values.email,phone:values.phone ,password:values.password,role:values.role });
+    }
+   
   }
 
   return (
@@ -59,6 +91,7 @@ export default function Register() {
         <div className="w-1/2 bg-gradient-to-br from-green-600 to-green-800 dark:from-green-700 dark:to-green-900 text-white p-8">
           <h2 className="text-2xl font-bold">Farm Connect</h2>
           <p className="mt-2">Join our growing community of farmers and wholesalers</p>
+          
           <div className="mt-6">
             <h3 className="font-semibold">Benefits of Registration</h3>
             <ul className="mt-2 space-y-2">
@@ -78,12 +111,6 @@ export default function Register() {
             <CardContent className="pt-4">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-                  {form.formState.errors.root && (
-                    <p className="text-sm font-medium text-destructive dark:text-red-400 text-center">
-                      {form.formState.errors.root.message}
-                    </p>
-                  )}
-
                   <FormField
                     control={form.control}
                     name="name"
@@ -172,6 +199,34 @@ export default function Register() {
                             {...field}
                             disabled={loading}
                           />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="role"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>I am registering as a</FormLabel>
+                        <FormControl>
+                          <RadioGroup 
+                            className="flex space-x-4" 
+                            value={field.value}
+                            onValueChange={field.onChange}
+                            disabled={loading}
+                          >
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem value="farmer" id="reg-farmer" />
+                              <FormLabel htmlFor="reg-farmer" className="cursor-pointer">Farmer</FormLabel>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem value="vendor" id="reg-vendor" />
+                              <FormLabel htmlFor="reg-vendor" className="cursor-pointer">Vendor</FormLabel>
+                            </div>
+                          </RadioGroup>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
