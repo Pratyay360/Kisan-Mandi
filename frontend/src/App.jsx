@@ -5,7 +5,8 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
-import Auctions from "./pages/Auctions.jsx"
+import Marketplace from "./pages/Marketplace.jsx"
+import ProductListForm from "./pages/ProductListForm.jsx";
 
 
 // Create a Layout component that includes Navbar and Footer
@@ -23,7 +24,8 @@ const router = createBrowserRouter([
   element: <Layout />,
   children: [
     // {path: "", element: <Home />},
-    {path: "auctions", element: <Auctions />},
+    {path: "marketplace", element: <Marketplace />},
+    {path: "product-form", element: <ProductListForm />},
   ],
 }
 ])

@@ -6,7 +6,7 @@ import { Clock, Users, BarChart2, Eye } from "lucide-react";
 // import { getAuctions } from "@/http/api";
 // import useTokenStore from "@/http/store";
 
-export default function AuctionList(
+export default function ProductList(
   { auctionss, showManageOptions = false }
 ) {
   // const role = useTokenStore((state) => state.role);
@@ -65,13 +65,13 @@ export default function AuctionList(
 
             <div className="flex justify-between items-center mb-3">
               <div>
-                <p className="text-sm text-muted-foreground">Current Bid</p>
+                <p className="text-sm text-muted-foreground">Current Price</p>
                 <p className="text-lg font-bold">
                   ₹{auction.currentBid.toLocaleString()}
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-sm text-muted-foreground">Bids</p>
+                <p className="text-sm text-muted-foreground">Apply</p>
                 <p className="flex items-center">
                   <Users className="h-4 w-4 mr-1" />
                   {auction.highestBidder.length}
@@ -100,7 +100,7 @@ export default function AuctionList(
               </div>
             ) : (
               <Button className="w-full">
-                <a href={`/auctions/${auction._id}`}>View Auction</a>
+                <a href={`/auctions/${auction._id}`}>View Product</a>
               </Button>
             )}
           </CardContent>
