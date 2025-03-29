@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/src/components/ui/tabs";
-import { Button } from "@/src/components/ui/button"; 
+import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
+import { Link } from "react-router-dom";
 import {
   Select,
   SelectContent,
@@ -14,6 +14,7 @@ import { Plus, Search, Filter, ArrowUpDown } from "lucide-react";
 import AuctionList from "@/src/components/ProductList.jsx";
 // import useTokenStore from "@/http/store";
 // import { getAuctions } from "@/http/api";
+
 
 export default function Marketplace() {
   const navigate = useNavigate();
@@ -59,18 +60,18 @@ export default function Marketplace() {
     }
   }, [searchQuery, categoryFilter, sortOption, auctionList]);
 
-//   useEffect(() => {
-//     const fetchAuctions = async () => {
-//       try {
-//         const response = await getAuctions();
-//         setAuctionList(response);
-//         setFilteredAllAuctions(response);
-//       } catch (error) {
-//         console.error("Error fetching auctions:", error);
-//       }
-//     };
-//     fetchAuctions();
-//   }, []);
+  //   useEffect(() => {
+  //     const fetchAuctions = async () => {
+  //       try {
+  //         const response = await getAuctions();
+  //         setAuctionList(response);
+  //         setFilteredAllAuctions(response);
+  //       } catch (error) {
+  //         console.error("Error fetching auctions:", error);
+  //       }
+  //     };
+  //     fetchAuctions();
+  //   }, []);
 
   return (
     <>
@@ -84,13 +85,14 @@ export default function Marketplace() {
               Browse and manage agricultural products
             </p>
           </div>
-          <Button
-            onClick={() => navigate("/product-form")}
-            className="bg-green-600 hover:bg-green-700"
-            size="lg"
-          >
-            <Plus className="mr-2 h-4 w-4" /> List New Product
-          </Button>
+          <Link to="/create-auction">
+            <Button
+              className="bg-green-600 hover:bg-green-700"
+              size="lg"
+            >
+              <Plus className="mr-2 h-4 w-4" /> List New Product
+            </Button>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-4 mb-6">
