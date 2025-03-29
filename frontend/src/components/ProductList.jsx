@@ -98,7 +98,7 @@ export default function ProductList({ auctions, showManageOptions = false }) {
               </div>
             ) : (
               <Button className="w-full">
-                <a href={`/auctions/${auction._id}`}>View Product</a>
+                <a href={`/product-order/${auction._id}`}>View Product</a>
               </Button>
             )}
           </CardContent>

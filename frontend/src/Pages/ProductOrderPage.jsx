@@ -1,5 +1,6 @@
 
 import { updateAuction, updateStatus } from "../http/api";
+import CountdownTimer from "../components/CountDownTimer";
 
 import { useState, useEffect, useRef } from "react";
 // import Image from "next/image";
@@ -54,10 +55,11 @@ const initialProduct = {
 };
 
 
+
 const ProductOrderPage = () => {
-    //   const { id } = useParams();
+      const { id } = useParams();
     
-    //   const socket = useSocket(id);
+      const socket = useSocket(id);
     
       const [userId, setUserId] = useState("");
       const [product, setProduct] = useState(initialProduct);
@@ -69,6 +71,78 @@ const ProductOrderPage = () => {
       const [timeLeft, setTimeLeft] = useState();
       const [activeImage, setActiveImage] = useState(0);
       const [showAllBidders, setShowAllBidders] = useState(false);
+
+      const updateBidCallback = async (data) => {
+        console.log("Callback:", data);
+        setCurrentBid(data.currentBid);
+        setBids(data.highestBidder);
+      };
+
+      const calculateTimeLeft = (endTime) => {
+        const now = new Date().getTime(); // Current time in milliseconds
+        const endTimeMs = new Date(endTime).getTime(); // Auction end time in milliseconds
+        const difference = endTimeMs - now; // Remaining time in milliseconds
+        if (difference <= 0 && auction?.status === "open") {
+          updateStatus(id);
+          auction.status = "closed";
+        }
+        console.log(
+          "Now: ",
+          now,
+          "End time: ",
+          endTimeMs,
+          "Difference: ",
+          difference
+        );
+        return difference > 0 ? difference : 0;
+      };
+      
+      useEffect(() => {
+        updateBid(socket, updateBidCallback);
+      }, [socket]);
+
+      useEffect(() => {
+        // Fethc user id from localstorage
+        const userId = useTokenStore.getState().userId;
+        setUserId(userId);
+        const fetchAuction = async () => {
+          try {
+            const response = await getAuctionById(id);
+            setAuction(response);
+            setBids(response.highestBidder);
+            setCurrentBid(response.currentBid);
+            setBidAmount(response.minBidIncrement + response.startingBid);
+            // setProduct(response);
+            // console.log(product);
+            if (response.farmerId) {
+              const farmerData = await getFarmerById(response.farmerId);
+              setFarmer(farmerData);
+            }
+          } catch (error) {
+            console.error("Error fetching auction:", error);
+          }
+        };
+    
+        fetchAuction();
+      }, []);
+
+      useEffect(() => {
+        if (auction) {
+          const updateTimer = () => {
+            const endTime = new Date(auction.updatedAt);
+            console.log("End time before: ", endTime);
+            endTime.setDate(endTime.getDate(endTime) + auction.duration);
+            console.log("End time after: ", endTime);
+            setTimeLeft(calculateTimeLeft(endTime));
+          };
+      
+          updateTimer(); // Initial call
+      
+          const interval = setInterval(updateTimer, 5000);
+      
+          return () => clearInterval(interval); // Cleanup on unmount
+        }
+      }, [auction]);
 
        const handleBidSubmit = (e) => {
           e.preventDefault();
@@ -84,6 +158,7 @@ const ProductOrderPage = () => {
       
           setBidAmount(bidAmount + auction?.minBidIncrement);
         };
+
 
 
   return (
