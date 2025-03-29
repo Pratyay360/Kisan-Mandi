@@ -11,8 +11,9 @@ import {
   Route,
   BrowserRouter
 } from "react-router-dom";
-import Auctions from "./Pages/Auctions.jsx"
-import { ErrorBoundary } from "react-error-boundary"
+import Marketplace from "./pages/Marketplace.jsx"
+import ProductListForm from "./pages/ProductListForm.jsx";
+
 
 // Create a Layout component that includes Navbar and Footer
 const Layout = () => (
@@ -39,16 +40,15 @@ const ErrorFallback = ({ error }) => {
 }
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    errorElement: <ErrorFallback />,
-    children: [
-      { path: "/", element: <Home /> },
-      { path: "auctions", element: <Auctions /> },
-      // Add other routes as needed
-    ],
-  }
+{
+  path: "/",
+  element: <Layout />,
+  children: [
+    // {path: "", element: <Home />},
+    {path: "marketplace", element: <Marketplace />},
+    {path: "product-form", element: <ProductListForm />},
+  ],
+}
 ])
 
 function App() {
