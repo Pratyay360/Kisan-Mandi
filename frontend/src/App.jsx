@@ -15,6 +15,8 @@ import Marketplace from "./Pages/Marketplace"
 import ProductListForm from "./Pages/ProductListForm"
 import { ErrorBoundary } from "react-error-boundary";
 import ProductOrderPage from "./Pages/ProductOrderPage";
+import Login from "./Pages/Login.jsx"
+import Register from "./Pages/Register.jsx"
 import CommunityForum from "./Pages/CommunityForum";
 
 // Create a Layout component that includes Navbar and Footer
@@ -50,12 +52,11 @@ const router = createBrowserRouter([
     {path: "marketplace", element: <Marketplace />},
     {path: "product-form", element: <ProductListForm />},
     {path: "product-order", element: <ProductOrderPage />},
-    {path: "community-forum", element: <CommunityForum />},
   ],
 }
 ])
 
-function App() {
+export default function App() {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <RouterProvider router={router} />
@@ -63,4 +64,3 @@ function App() {
   );
 }
 
-export default App
