@@ -267,9 +267,10 @@ const ProductOrderPage = () => {
                               /5 Rating
                             </span>
                           </div>
+{/*                           
                           <Button variant="outline" size="sm" className="mt-3">
                             View Profile
-                          </Button>
+                          </Button> */}
                         </div>
                       </div>
                     </TabsContent>
