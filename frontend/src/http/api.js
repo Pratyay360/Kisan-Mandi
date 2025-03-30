@@ -138,6 +138,7 @@ export const updateUser = async (id, data) => {
   }
 };
 
+
 export const acceptOrder = async (data) => {
   try {
     const response = await api.post(`/api/users/acceptorder`,data);
@@ -147,3 +148,14 @@ export const acceptOrder = async (data) => {
     throw error;
   }
 }
+
+export const postComment = async (id, data) => {
+  try {
+    const response = await api.post(`/api/forums/comment/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error("User update failed:", error);
+    throw error;
+  }
+};
+

@@ -36,6 +36,7 @@ export const getQuestions = async (req, res) => {
 export const postComment = async (req, res) => {
     try {
         const { comment } = req.body
+        console.log(comment)
         if (!comment) {
             return createHttpError(400, 'Comment is required')
         }
@@ -48,5 +49,22 @@ export const postComment = async (req, res) => {
         res.status(201).json(question)
     } catch (error) {
         return createHttpError(500, 'Error while posting comment')
+    }
+}
+
+export const  getForumPostByid = async (req, res) => {
+    try{
+        const { id } = req.params; // Get forum post ID from request params
+
+        // Fetch forum post by ID and populate user details if needed
+        const forumPost = await Forum.findById(id);
+    
+        if (!forumPost) {
+          return res.status(404).json({ message: "Forum post not found" });
+        }
+    
+        res.status(200).json(forumPost); // Send post details as response
+    }catch (error) {
+        return createHttpError(500, "Error while getting forum post by ID")
     }
 }

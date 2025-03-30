@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator";
 // import { useToast } from "@/components/ui/use-toast";
 // import Navbar from "@/components/Navbar";
 import { ArrowUpCircle, ArrowDownCircle, User, Clock } from "lucide-react";
+import { postComment } from "../http/api";
 
 // Dummy question data - would come from an API in a real app
 const QUESTION = {
@@ -28,59 +29,67 @@ const QUESTION = {
 };
 
 // Dummy answers
-const ANSWERS = [
-  {
-    id: "a1",
-    content:
-      "Crop rotation is definitely the most effective organic solution for corn rootworm. Adult rootworms lay eggs in corn fields in late summer, and the eggs hatch the following spring. By rotating to soybeans or another non-host crop, you break the life cycle.\n\nI've been rotating corn with soybeans for over 10 years and rarely have rootworm issues anymore. It's simple but effective.",
-    author: "OrganicFarmer42",
-    authorAvatar: "",
-    date: "June 16, 2023",
-    votes: 8,
-  },
-  {
-    id: "a2",
-    content:
-      "I've had good results using beneficial nematodes for rootworm control. The species Heterorhabditis bacteriophora specifically targets rootworm larvae. Application timing is critical - apply them when soil temperatures are consistently above 60°F and larvae are present but still young.\n\nMake sure to follow the storage and application instructions carefully, as nematodes are living organisms and can die if mishandled. I usually apply them in the evening with plenty of water to help them move into the soil.",
-    author: "BioControlEnthusiast",
-    authorAvatar: "",
-    date: "June 17, 2023",
-    votes: 6,
-  },
-  {
-    id: "a3",
-    content:
-      "While crop rotation is the gold standard, some rootworm variants have adapted by laying eggs in soybean fields or extending their diapause for more than one season. If you're in an area with these variants, consider a longer rotation with multiple non-host crops.\n\nAlso, consider planting a cover crop mix that includes buckwheat and mustards after harvest - these have some biofumigation properties that may reduce pest pressure the following season.",
-    author: "AgExtension",
-    authorAvatar: "",
-    date: "June 18, 2023",
-    votes: 15,
-  },
-];
+// const ANSWERS = [
+//   {
+//     id: "a1",
+//     content:
+//       "Crop rotation is definitely the most effective organic solution for corn rootworm. Adult rootworms lay eggs in corn fields in late summer, and the eggs hatch the following spring. By rotating to soybeans or another non-host crop, you break the life cycle.\n\nI've been rotating corn with soybeans for over 10 years and rarely have rootworm issues anymore. It's simple but effective.",
+//     author: "OrganicFarmer42",
+//     authorAvatar: "",
+//     date: "June 16, 2023",
+//     votes: 8,
+//   },
+//   {
+//     id: "a2",
+//     content:
+//       "I've had good results using beneficial nematodes for rootworm control. The species Heterorhabditis bacteriophora specifically targets rootworm larvae. Application timing is critical - apply them when soil temperatures are consistently above 60°F and larvae are present but still young.\n\nMake sure to follow the storage and application instructions carefully, as nematodes are living organisms and can die if mishandled. I usually apply them in the evening with plenty of water to help them move into the soil.",
+//     author: "BioControlEnthusiast",
+//     authorAvatar: "",
+//     date: "June 17, 2023",
+//     votes: 6,
+//   },
+//   {
+//     id: "a3",
+//     content:
+//       "While crop rotation is the gold standard, some rootworm variants have adapted by laying eggs in soybean fields or extending their diapause for more than one season. If you're in an area with these variants, consider a longer rotation with multiple non-host crops.\n\nAlso, consider planting a cover crop mix that includes buckwheat and mustards after harvest - these have some biofumigation properties that may reduce pest pressure the following season.",
+//     author: "AgExtension",
+//     authorAvatar: "",
+//     date: "June 18, 2023",
+//     votes: 15,
+//   },
+// ];
 
 const QuestionDetail = () => {
   const { id } = useParams();
   const [answerText, setAnswerText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [answers, setAnswers] = useState([])
 //   const { toast } = useToast();
 
-useEffect(() =>{
-console.log("sldfjl")
-})
+// useEffect(() =>{
 
-  const handleSubmitAnswer = (e) => {
+// })
+
+  const handleSubmitAnswer = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    console.log("sdfsdfssssssssss")
 
-    // Simulate posting the answer
-    setTimeout(() => {
+    const response = await postComment(id, { comment: answerText });
+    console.log(1, response);
+    // setAnswers(response.comments)
+    setAnswers([])
       setIsSubmitting(false);
       setAnswerText("");
-    //   toast({
-    //     title: "Answer Posted",
-    //     description: "Your answer has been posted successfully.",
-    //   });
-    }, 1000);
+    // Simulate posting the answer
+    // setTimeout(() => {
+    //   setIsSubmitting(false);
+    //   setAnswerText("");
+    // //   toast({
+    // //     title: "Answer Posted",
+    // //     description: "Your answer has been posted successfully.",
+    // //   });
+    // }, 1000);
   };
 
   return (
@@ -144,8 +153,8 @@ console.log("sldfjl")
                Answers
             </h2>
             <div className="space-y-6">
-              {ANSWERS.map((answer) => (
-                <Card key={answer.id}>
+              {answers.map((answer) => (
+                <Card key={answer?._id}>
                   <CardContent className="pt-6">
                     <div className="flex gap-4">
                       <div className="flex flex-col items-center gap-2">
@@ -154,7 +163,7 @@ console.log("sldfjl")
                           <span className="sr-only">Upvote</span>
                         </Button>
                         <span className="text-sm font-medium">
-                          {answer.votes}
+                          {answer?.votes}
                         </span>
                         <Button variant="ghost" size="icon" className="h-8 w-8">
                           <ArrowDownCircle className="h-5 w-5 text-muted-foreground" />
@@ -162,15 +171,15 @@ console.log("sldfjl")
                         </Button>
                       </div>
                       <div className="flex-1 space-y-4">
-                        <p className="whitespace-pre-line">{answer.content}</p>
+                        <p className="whitespace-pre-line">{answer?.content}</p>
                         <div className="flex items-center justify-end gap-4 text-sm text-muted-foreground">
                           <div className="flex items-center gap-1">
                             <User className="h-4 w-4" />
-                            <span>{answer.author}</span>
+                            <span>{answer?.author}</span>
                           </div>
                           <div className="flex items-center gap-1">
                             <Clock className="h-4 w-4" />
-                            <span>{answer.date}</span>
+                            <span>{answer?.date}</span>
                           </div>
                         </div>
                       </div>
