@@ -13,7 +13,7 @@ import { Separator } from "@/components/ui/separator";
 // import { useToast } from "@/components/ui/use-toast";
 // import Navbar from "@/components/Navbar";
 import { ArrowUpCircle, ArrowDownCircle, User, Clock } from "lucide-react";
-import { postComment } from "../http/api";
+import { postComment, getForumPostByid } from "../http/api";
 
 // Dummy question data - would come from an API in a real app
 const QUESTION = {
@@ -63,12 +63,25 @@ const QuestionDetail = () => {
   const { id } = useParams();
   const [answerText, setAnswerText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [answers, setAnswers] = useState([])
+  const [question, setQuestion] = useState([])
+  const [comments, setComments] = useState([])
 //   const { toast } = useToast();
 
-// useEffect(() =>{
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        const response = await getForumPostByid(id);
+        console.log(response)
+        setComments(response.comments);
+        setQuestion(response);
+        // setQuestions(response);
+      } catch (error) {
+        console.error("Error fetching questions:", error);
+      }
+    };
 
-// })
+    fetchDetails();
+  }, []);
 
   const handleSubmitAnswer = async (e) => {
     e.preventDefault();
@@ -77,8 +90,6 @@ const QuestionDetail = () => {
 
     const response = await postComment(id, { comment: answerText });
     console.log(1, response);
-    // setAnswers(response.comments)
-    setAnswers([])
       setIsSubmitting(false);
       setAnswerText("");
     // Simulate posting the answer
@@ -102,7 +113,7 @@ const QuestionDetail = () => {
             <CardHeader className="pb-3">
               <div className="space-y-2">
                 <h1 className="text-2xl font-bold text-farm-earth text-green-600">
-                  {QUESTION.title}
+                  {question.title}
                 </h1>
                 <div className="flex flex-wrap gap-1">
                   {QUESTION.tags.map((tag) => (
@@ -124,22 +135,22 @@ const QuestionDetail = () => {
                     <ArrowUpCircle className="h-5 w-5 text-muted-foreground" />
                     <span className="sr-only">Upvote</span>
                   </Button>
-                  <span className="text-sm font-medium">{QUESTION.votes}</span>
+                  <span className="text-sm font-medium">{12}</span>
                   <Button variant="ghost" size="icon" className="h-8 w-8">
                     <ArrowDownCircle className="h-5 w-5 text-muted-foreground" />
                     <span className="sr-only">Downvote</span>
                   </Button>
                 </div>
                 <div className="flex-1 space-y-4">
-                  <p className="whitespace-pre-line">{QUESTION.content}</p>
+                  <p className="whitespace-pre-line">{question.description}</p>
                   <div className="flex items-center justify-end gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
                       <User className="h-4 w-4" />
-                      <span>{QUESTION.author}</span>
+                      <span>sayantan</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="h-4 w-4" />
-                      <span>{QUESTION.date}</span>
+                      {/* <span>{question.createdAt}</span> */}
                     </div>
                   </div>
                 </div>
@@ -153,7 +164,7 @@ const QuestionDetail = () => {
                Answers
             </h2>
             <div className="space-y-6">
-              {answers.map((answer) => (
+              {comments.map((answer) => (
                 <Card key={answer?._id}>
                   <CardContent className="pt-6">
                     <div className="flex gap-4">
@@ -163,7 +174,7 @@ const QuestionDetail = () => {
                           <span className="sr-only">Upvote</span>
                         </Button>
                         <span className="text-sm font-medium">
-                          {answer?.votes}
+                          {/* {answer?.votes} */}12
                         </span>
                         <Button variant="ghost" size="icon" className="h-8 w-8">
                           <ArrowDownCircle className="h-5 w-5 text-muted-foreground" />
@@ -171,7 +182,7 @@ const QuestionDetail = () => {
                         </Button>
                       </div>
                       <div className="flex-1 space-y-4">
-                        <p className="whitespace-pre-line">{answer?.content}</p>
+                        <p className="whitespace-pre-line">{answer?.comment}</p>
                         <div className="flex items-center justify-end gap-4 text-sm text-muted-foreground">
                           <div className="flex items-center gap-1">
                             <User className="h-4 w-4" />
@@ -179,7 +190,7 @@ const QuestionDetail = () => {
                           </div>
                           <div className="flex items-center gap-1">
                             <Clock className="h-4 w-4" />
-                            <span>{answer?.date}</span>
+                            <span>{answer?.updatedAt}</span>
                           </div>
                         </div>
                       </div>
