@@ -43,6 +43,10 @@ const userSchema = new mongoose.Schema({
     //     type: String,
     //     required: false,
     // },
+    acceptedOrders:{
+        type: Array,
+        default: [],
+    }
 },
 {
     timestamps: true,    
