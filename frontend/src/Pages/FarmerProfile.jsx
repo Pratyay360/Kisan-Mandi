@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect,useState } from "react";
 import { Link } from "react-router-dom";
 // import Navbar from "@/components/Navbar";
 // import Footer from "@/components/Footer";
@@ -25,10 +25,17 @@ import {
   Calendar,
 } from "lucide-react";
 import ProductList from "../components/ProductList";
+import { useParams } from "react-router-dom";
+import { getFarmerById,getMyAuctions } from "../http/api";
+import { Clock, Users, BarChart2, Eye } from "lucide-react";
 
 const FarmerProfile = () => {
   // Normally this would come from an API or database
-  const farmer = {
+  const { id } = useParams();
+  const [farmer, setFarmer] = useState();
+  const [products, setProducts] = useState();
+
+  const farmerDemo = {
     id: 1,
     name: "Sarah Johnson",
     avatar:
@@ -74,6 +81,34 @@ const FarmerProfile = () => {
     ],
   };
 
+  useEffect(() => {
+    // Fetch farmer data from API or database based on farmerId
+    const fetchFarmer = async () => {
+      try {
+        const response = await getFarmerById(id);
+        setFarmer(response);
+      } catch (error) {
+        console.error("Failed to fetch farmer:", error);
+      }
+    }
+    // Update farmer state with fetched data
+    fetchFarmer();
+  }, [id]);
+
+  useEffect(() => {
+    if (farmer) {
+      const fetchProducts = async () => {
+        try {
+          const response = await getMyAuctions(farmer._id);
+          setProducts(response);
+        } catch (error) {
+          console.error("Failed to fetch products:", error);
+        }
+      }
+      fetchProducts();
+    }
+  }, [farmer]);
+
   const showManageOptions = false;
 
   return (
@@ -100,9 +135,9 @@ const FarmerProfile = () => {
               {/* Avatar */}
               <div className="absolute -top-16 left-6 sm:left-8">
                 <Avatar className="h-32 w-32 border-4 border-white dark:border-gray-800 shadow-lg">
-                  <AvatarImage src={farmer.avatar} alt={farmer.name} />
+                  <AvatarImage src={farmer?.avatar} alt={farmer?.name} />
                   <AvatarFallback className="bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200 text-4xl font-medium">
-                    {farmer.name
+                    {farmer?.name
                       .split(" ")
                       .map((n) => n[0])
                       .join("")}
@@ -113,20 +148,20 @@ const FarmerProfile = () => {
               <div className="md:flex md:justify-between md:items-end">
                 <div>
                   <h1 className="text-3xl font-bold text-green-900 dark:text-green-100">
-                    {farmer.name}
+                    {farmer?.name}
                   </h1>
                   <div className="flex items-center mt-2 text-green-700 dark:text-green-400">
                     <MapPin className="h-4 w-4 mr-1" />
-                    <span>{farmer.location}</span>
+                    <span>{farmer?.location}</span>
                   </div>
 
                   <div className="flex items-center mt-1 text-green-700 dark:text-green-400">
                     <Calendar className="h-4 w-4 mr-1" />
-                    <span>Farming since {farmer.since}</span>
+                    <span>Farming since {farmer?.since}</span>
                   </div>
 
                   <div className="flex flex-wrap gap-2 mt-3">
-                    {farmer.specialties.map((specialty, index) => (
+                    {farmerDemo.specialties.map((specialty, index) => (
                       <Badge
                         key={index}
                         variant="outline"
@@ -142,10 +177,12 @@ const FarmerProfile = () => {
                   <div className="flex items-center text-amber-500">
                     <Star className="h-5 w-5 fill-current" />
                     <span className="ml-1 font-semibold text-gray-800 dark:text-gray-200">
-                      {farmer.rating}
+                      {/* {farmer.rating} */}
+                      4.8
                     </span>
                     <span className="ml-1 text-gray-600 dark:text-gray-400">
-                      ({farmer.reviews} reviews)
+                      {/* ({farmer.reviews} reviews) */}
+                      farmer.reviews reviews
                     </span>
                   </div>
                 </div>
@@ -166,7 +203,7 @@ const FarmerProfile = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-700 dark:text-gray-300">
-                    {farmer.bio}
+                  {farmerDemo.bio}
                   </p>
                 </CardContent>
               </Card>
@@ -179,7 +216,7 @@ const FarmerProfile = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  {farmer.certifications.map((cert, index) => (
+                  {farmerDemo.certifications.map((cert, index) => (
                     <div
                       key={index}
                       className="flex items-center p-2 bg-green-50 dark:bg-green-900/30 rounded-md"
@@ -204,13 +241,13 @@ const FarmerProfile = () => {
                   <div className="flex items-center">
                     <Phone className="text-green-600 dark:text-green-400 mr-2 h-5 w-5" />
                     <span className="text-gray-700 dark:text-gray-300">
-                      {farmer.phone}
+                      {farmer?.phone}
                     </span>
                   </div>
                   <div className="flex items-center">
                     <Mail className="text-green-600 dark:text-green-400 mr-2 h-5 w-5" />
                     <span className="text-gray-700 dark:text-gray-300">
-                      {farmer.email}
+                      {farmer?.email}
                     </span>
                   </div>
                 </CardContent>
@@ -225,21 +262,21 @@ const FarmerProfile = () => {
                     Listed Products
                   </CardTitle>
                   <CardDescription className="dark:text-gray-400">
-                    Fresh produce from {farmer.name}'s farm
+                    Fresh produce from {farmer?.name}'s farm
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="px-4 md:px-8 pb-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {farmer.products.map((product) => (
+                    {products?.map((product) => (
                       <div
-                        key={product.id}
+                        key={product._id}
                         className="border border-green-100 dark:border-green-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200"
                       >
                         <Card key={product._id} className="overflow-hidden p-0">
                           <div className="relative">
                             <div className="relative h-72 w-full">
                               <img
-                                src={product?.image[0] || "img/1.jpg"}
+                                src={product?.images[0] || "img/1.jpg"}
                                 alt={product?.description}
                                 className="w-full h-full object-cover"
                               />
@@ -270,7 +307,7 @@ const FarmerProfile = () => {
                                 {product.product}
                               </h3>
                               <p className="text-sm text-muted-foreground line-clamp-1">
-                                by {product?.farmer?.name}
+                                by {product?.farmerId?.name}
                               </p>
                             </div>
 
@@ -280,8 +317,7 @@ const FarmerProfile = () => {
                                   Current Price
                                 </p>
                                 <p className="text-lg font-bold">
-                                  ₹{product?.currentBid 
-                                  // .toLocaleString()
+                                  ₹{product?.currentBid.toLocaleString()
                                   }
                                 </p>
                               </div>
@@ -290,8 +326,8 @@ const FarmerProfile = () => {
                                   Apply
                                 </p>
                                 <p className="flex items-center">
-                                  {/* <Users className="h-4 w-4 mr-1" /> */}
-                                  {/* {product?.highestBidder.length} */}
+                                  <Users className="h-4 w-4 mr-1" /> 
+                                  {product?.highestBidder.length}
                                 </p>
                               </div>
                             </div>

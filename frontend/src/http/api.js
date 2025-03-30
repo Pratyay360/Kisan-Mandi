@@ -116,3 +116,13 @@ export const getQuestions = async () => {
     throw error;
   }
 };
+
+export const getMyAuctions = async (id) => {
+  try {
+    const response = await api.get(`/api/auctions/myauctions/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch my auctions:", error);
+    throw error;
+  }
+};
