@@ -76,25 +76,25 @@ export default function Admin() {
         );
     }
 
-    if (!isAdmin) {
-        return (
-            <div className="min-h-screen p-8 flex items-center justify-center">
-                <Card className="w-full max-w-md">
-                    <CardHeader>
-                        <CardTitle>Access Denied</CardTitle>
-                        <CardDescription>
-                            You don't have permission to access the admin panel.
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <Button onClick={() => window.location.href = "/"} className="w-full">
-                            Return to Home
-                        </Button>
-                    </CardContent>
-                </Card>
-            </div>
-        );
-    }
+    // if (!isAdmin) {
+    //     return (
+    //         <div className="min-h-screen p-8 flex items-center justify-center">
+    //             <Card className="w-full max-w-md">
+    //                 <CardHeader>
+    //                     <CardTitle>Access Denied</CardTitle>
+    //                     <CardDescription>
+    //                         You don't have permission to access the admin panel.
+    //                     </CardDescription>
+    //                 </CardHeader>
+    //                 <CardContent>
+    //                     <Button onClick={() => window.location.href = "/"} className="w-full">
+    //                         Return to Home
+    //                     </Button>
+    //                 </CardContent>
+    //             </Card>
+    //         </div>
+    //     );
+    // }
 
     return (
         <div className="min-h-screen p-8 bg-gray-50">

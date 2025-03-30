@@ -25,6 +25,7 @@ import ProductPage from "./Pages/ProductPage";
 import AboutUs from "./Pages/AboutUs";
 import FarmerProfile from "./Pages/FarmerProfile";
 import FarmerProductPage from "./Pages/farmerProductPage";
+import Admin from "./Pages/admin";
 // Create a toast context for application-wide error notifications
 export const ToastContext = createContext({
   showError: (message) => {},
@@ -45,7 +46,6 @@ export const ToastProvider = ({ children }) => {
 export const useToast = () => useContext(ToastContext);
 import CommunityForum from "./Pages/CommunityForum";
 import AskQuestionForm from "./Pages/AskQuestionForm";
-import Admin from "./Pages/admin";
 // import FarmerProfile from "./Pages/FarmerProfile";
 
 // Create a Layout component that includes Navbar and Footer
@@ -102,6 +102,7 @@ const router = createBrowserRouter([
       { path: "ask-question-form", element: <AskQuestionForm /> },
       { path: "profile/:id", element: <FarmerProfile /> },
       {path:"farmer-product/:id", element: <FarmerProductPage />},
+      {path:"admin", element: <Admin />}
     ],
   },
 ]);
