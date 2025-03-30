@@ -142,4 +142,20 @@ const farmerInfo = async (req, res, next) =>{
     }
 }
 
-export {createUser, loginUser, farmerInfo}
+const vendorInfo = async (req, res, next) =>{
+    console.log(req.params.userId)
+    try {
+        const vendor = await userModel.findById(req.params.userId)
+        .select("-password -__v  -createdAt -updatedAt -_id");
+
+        if(!vendor || vendor.role !== "vendor"){
+            return next(createHttpError(404, "Vendor not found"));
+        }
+        res.json(vendor);
+
+    } catch (error) {
+        console.log("error while getting vendor info");
+        next(error);
+    }
+}
+export {createUser, loginUser, farmerInfo, vendorInfo}
