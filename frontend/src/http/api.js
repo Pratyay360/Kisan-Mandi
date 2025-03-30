@@ -137,3 +137,13 @@ export const updateUser = async (id, data) => {
     throw error;
   }
 };
+
+export const acceptOrder = async (data) => {
+  try {
+    const response = await api.post(`/api/users/acceptorder`,data);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to accept order:", error);
+    throw error;
+  }
+}
