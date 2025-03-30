@@ -190,3 +190,12 @@ export const createOrder = async (data) => {
   }
 };
 
+export const getFarmProducts=async () => {
+  try{
+    const response = await api.get('/api/products');
+    return response.data;
+  }catch(error){
+    console.log(error)
+    throw error
+  }
+}
