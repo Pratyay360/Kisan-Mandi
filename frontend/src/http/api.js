@@ -126,3 +126,14 @@ export const getMyAuctions = async (id) => {
     throw error;
   }
 };
+
+
+export const updateUser = async (id, data) => {
+  try {
+    const response = await api.put(`/api/users/update/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error("User update failed:", error);
+    throw error;
+  }
+};
