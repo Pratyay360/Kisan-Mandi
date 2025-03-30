@@ -4,6 +4,7 @@ import QuestionCard from "@/src/components/QuestionCard.jsx";
 import CommunityHeader from "@/src/components/CommunityHeader.jsx";
 
 import { getQuestions } from "../http/api";
+import { Link } from "lucide-react";
 
 const DUMMY_QUESTIONS = [
   {
@@ -117,7 +118,7 @@ const CommunityForum = () => {
                 date={question.createdAt}
                 votes={30}
                 answers={question.comments.length}
-                tags={question.tags}
+                tags={question.tags}                
               />
             ))}
           </TabsContent>

@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import ProductList from "../components/ProductList";
 import { useParams } from "react-router-dom";
-import { getFarmerById,getMyAuctions } from "../http/api";
+import { getFarmerById,getMyAuctions, updateUser } from "../http/api";
 import { Clock, Users, BarChart2, Eye } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import axios from "axios"
@@ -139,6 +139,12 @@ const FarmerProfile = () => {
       if (response.data.secure_url) {
         console.log("Uploaded Image URL:", response.data.secure_url);
         setAvatarUrl(response.data.secure_url); // Updating the state with the new profile image
+        const userresponse = await updateUser(id,{profileImage: response.data.secure_url});
+        if (response.status === 200) {
+          console.log("Image updated successfully:", userresponse.data);
+        } else {
+          console.error("Image update failed:", userresponse.data);
+        }
       }
     } catch (error) {
       console.error("Image upload failed:", error);

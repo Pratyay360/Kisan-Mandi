@@ -82,11 +82,6 @@ export default function Marketplace() {
             Browse and manage agricultural products
           </p>
         </div>
-        <Link to="/product-form">
-          <Button className="bg-green-600 hover:bg-green-700" size="lg">
-            <Plus className="mr-2 h-4 w-4" /> List New Product
-          </Button>
-        </Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-4 mb-6">
