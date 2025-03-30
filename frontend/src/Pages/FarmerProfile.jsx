@@ -107,6 +107,14 @@ const FarmerProfile = () => {
                       .map((n) => n[0])
                       .join("")}
                   </AvatarFallback>
+                  <Input
+                                                      type="file"
+                                                      accept="image/*"
+                                                      multiple
+                                                      className="absolute inset-0 opacity-0 cursor-pointer h-full w-full"
+                                                      onChange={handleImageUpload}
+                                                      disabled={uploading}
+                                                    />
                 </Avatar>
               </div>
 
