@@ -19,6 +19,21 @@ import useTokenStore from "../http/store";
 
 
 export default function Navbar() {
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    try {
+        const token = localStorage.getItem("user-store");
+        if (token) {
+            const userData = JSON.parse(token);
+            setIsAdmin(userData?.state?.role === "admin");
+        } else {
+            setIsAdmin(false);
+        }
+    } catch (error) {
+        console.error("Error accessing user data:", error);
+        setIsAdmin(false);
+    } 
+}, []);
   // State to manage the mobile navigation menu
   const [userId, setUserId] = useState("");
   const navigate = useNavigate();
@@ -85,6 +100,11 @@ export default function Navbar() {
                       </Avatar>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
+                      {isAdmin && (
+                        <DropdownMenuItem onClick={() => navigate("/admin")}>
+                          Admin Panel
+                        </DropdownMenuItem>
+                      )}
                       <DropdownMenuItem onClick={() => navigate(`/profile/${userId}`)}>Profile</DropdownMenuItem>
                       <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
                     </DropdownMenuContent>

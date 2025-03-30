@@ -101,8 +101,8 @@ const router = createBrowserRouter([
       { path: "community-forum", element: <CommunityForum /> },
       { path: "ask-question-form", element: <AskQuestionForm /> },
       { path: "profile/:id", element: <FarmerProfile /> },
-      {path:"farmer-product/:id", element: <FarmerProductPage />},
-      {path:"admin", element: <Admin />}
+      { path:"farmer-product/:id", element: <FarmerProductPage />},
+      { path:"admin", element: <Admin /> },
     ],
   },
 ]);
