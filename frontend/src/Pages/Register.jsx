@@ -31,19 +31,20 @@ import {
   CalendarIcon,
 } from "lucide-react";
 
-const formSchema = zod
-  .object({
-    name: zod.string().min(1, "Name is required"),
-    email: zod.string().email({ message: "Invalid email address" }),
-    phone: zod.string().min(10, "Phone number must be at least 10 digits"),
-    password: zod.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: zod.string().min(1, "Confirm Password is required"),
-    role: zod.enum(["farmer", "vendor"]),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
+
+import { toast } from "sonner";
+const formSchema = zod.object({
+  name: zod.string().min(1, "Name is required"),
+  email: zod.string().email({ message: "Invalid email address" }),
+  phone: zod.string().min(10, "Phone number must be at least 10 digits"),
+  password: zod.string().min(6, "Password must be at least 6 characters"),
+  confirmPassword: zod.string().min(1, "Confirm Password is required"),
+  role: zod.enum(["farmer", "vendor"]),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"]
+});
+
 
 export default function Register() {
   const navigate = useNavigate();
@@ -67,26 +68,28 @@ export default function Register() {
   const setName = useTokenStore((state) => state.setName);
   const setUserId = useTokenStore((state) => state.setUserId);
   const mutation = useMutation({
-    mutationFn: createUser,
-    onSuccess: (res) => {
-      console.log("login success", res.token);
-      //redirect to dashboard
-      setToken(res.token);
-      setRole(res.role);
-      setName(res.name);
-      setUserId(res.userId);
-      // auto reload the page after login
-      // window.location.href = "/";
-      setLoading(false);
-    },
-  });
+
+      mutationFn: createUser,
+      onSuccess: (res) => {
+        console.log("login success", res.token);
+        //redirect to dashboard
+        setToken(res.token);
+        setRole(res.role);
+        setName(res.name);
+        setUserId(res.userId);
+        // auto reload the page after login
+        toast.success("Registration successful");
+        navigate("/");
+        setLoading(false);
+      },
+    })
 
   async function onSubmit(values) {
     console.log("Form values:", values);
     setLoading(true);
 
     if (!values.email || !values.password) {
-      return alert("Please enter email and password");
+      toast.error("Please enter email and password");
     }
     if (values.password !== values.confirmPassword) {
       // Show Toast Form password not matching

@@ -22,7 +22,27 @@ const userSchema = new mongoose.Schema({
     phone: {
         type: String,
         unique: true
-    }
+    },
+    location:{
+        type: String,
+        required: true
+    },
+    profileImage: {
+        type: String,
+        required: false,
+    },
+    bannerImage: {
+        type: String,
+        required: false,
+    },
+    experience: {
+        type: String,
+        required: false,
+    },
+    // about: {
+    //     type: String,
+    //     required: false,
+    // },
 },
 {
     timestamps: true,    

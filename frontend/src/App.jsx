@@ -23,6 +23,7 @@ import { toast } from "sonner";
 import Message from "./Pages/Message";
 import ProductPage from "./Pages/ProductPage";
 import AboutUs from "./Pages/AboutUs";
+import FarmerProfile from "./Pages/FarmerProfile";
 // Create a toast context for application-wide error notifications
 export const ToastContext = createContext({
   showError: (message) => {},
@@ -43,7 +44,7 @@ export const ToastProvider = ({ children }) => {
 export const useToast = () => useContext(ToastContext);
 import CommunityForum from "./Pages/CommunityForum";
 import AskQuestionForm from "./Pages/AskQuestionForm";
-import FarmerProfile from "./Pages/FarmerProfile";
+// import FarmerProfile from "./Pages/FarmerProfile";
 
 // Create a Layout component that includes Navbar and Footer
 const Layout = () => (
@@ -97,6 +98,7 @@ const router = createBrowserRouter([
       { path: "products", element: <ProductPage /> },
       { path: "community-forum", element: <CommunityForum /> },
       { path: "ask-question-form", element: <AskQuestionForm /> },
+      { path: "profile/:id", element: <FarmerProfile /> },
     ],
   },
 ]);
@@ -116,7 +118,6 @@ export default function App() {
     >
       <ToastProvider>
         <RouterProvider router={router} />
-        <Toaster position="top-right" richColors closeButton />
       </ToastProvider>
     </ErrorBoundary>
   );
