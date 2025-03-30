@@ -105,7 +105,7 @@ export default function Navbar() {
                           Admin Panel
                         </DropdownMenuItem>
                       )}
-                      <DropdownMenuItem onClick={() => navigate(`/profile/${userId}`)}>Profile</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => navigate(`/profile`)}>Profile</DropdownMenuItem>
                       <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>

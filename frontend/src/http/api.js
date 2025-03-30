@@ -87,6 +87,16 @@ export const getFarmerById = async (id) => {
   }
 };
 
+export const getVendorById = async (id) => {
+  try {
+    const response = await api.get(`/api/users/vendors/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch vendor:", error);
+    throw error;
+  }
+};
+
 export const updateStatus = async (id) => {
   try {
     const response = await api.put(`/api/auctions/updatestatus/${id}`, { status: "closed" });
@@ -152,6 +162,16 @@ export const acceptOrder = async (data) => {
 export const postComment = async (id, data) => {
   try {
     const response = await api.post(`/api/forums/comment/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error("User update failed:", error);
+    throw error;
+  }
+};
+
+export const createOrder = async (data) => {
+  try {
+    const response = await api.post(`/api/payment/create-order`, data);
     return response.data;
   } catch (error) {
     console.error("User update failed:", error);

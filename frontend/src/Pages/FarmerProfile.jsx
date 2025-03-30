@@ -30,13 +30,14 @@ import { getFarmerById,getMyAuctions, updateUser } from "../http/api";
 import { Clock, Users, BarChart2, Eye } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import axios from "axios"
+import useTokenStore from "../http/store";
 
 const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME; // Replace with actual Cloudinary cloud name
 const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET; // Replace with your Cloudinary upload preset if applicable
 
 const FarmerProfile = () => {
   // Normally this would come from an API or database
-  const { id } = useParams();
+  const id = useTokenStore.getState().userId
   const [farmer, setFarmer] = useState();
   const [products, setProducts] = useState();
   const [uploading, setUploading] = useState();
@@ -50,7 +51,7 @@ const FarmerProfile = () => {
       "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80",
     location: "Green Valley, California",
     since: "2015",
-    bio: "Fourth-generation farmer specializing in organic vegetables and heritage grains. Our family farm has been practicing sustainable agriculture for over 60 years.",
+    bio: "Fourth-generation farmer specializing in organic vegetables and heritage grains. Our family farm has been practicing sustainable agriculture for over a years.",
     specialties: ["Organic Vegetables", "Heritage Grains", "Free-range Eggs"],
     certifications: ["USDA Organic", "Regenerative Organic Certified"],
     rating: 4.8,
@@ -248,7 +249,7 @@ const FarmerProfile = () => {
 
                   <div className="flex items-center mt-1 text-green-700 dark:text-green-400">
                     <Calendar className="h-4 w-4 mr-1" />
-                    <span>Farming since {farmer?.since}</span>
+                    <span>Farming since {farmer?.experience} years</span>
                   </div>
 
                   <div className="flex flex-wrap gap-2 mt-3">
