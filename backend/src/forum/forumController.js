@@ -36,6 +36,7 @@ export const getQuestions = async (req, res) => {
 export const postComment = async (req, res) => {
     try {
         const { comment } = req.body
+        console.log(comment)
         if (!comment) {
             return createHttpError(400, 'Comment is required')
         }

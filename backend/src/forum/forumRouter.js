@@ -5,7 +5,7 @@ const forumRouter = express.Router();
 
 forumRouter.get('/', authenticate,getQuestions);
 forumRouter.post('/', authenticate,createQuestion);
-forumRouter.post('/comment/:id', authenticate,postComment);
+forumRouter.post('/comment/:id', authenticate,createComment);
 forumRouter.get('/:id', authenticate,getForumPostByid);
 
 export default forumRouter;
