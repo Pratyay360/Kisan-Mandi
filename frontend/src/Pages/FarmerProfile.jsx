@@ -353,7 +353,7 @@ const FarmerProfile = () => {
                               </div>
                             ) : (
                               <Button className="w-full">
-                                <a href={`/product/${product._id}`}>
+                                <a href={`/farmer-product/${product._id}`}>
                                   View Product
                                 </a>
                               </Button>
