@@ -175,11 +175,13 @@ const editUserById = async (req, res, next) =>{
 
 const acceptOrder = async (req, res, next) =>{
     try{
+        const {userId,auctionId}=req.body;
         const users = await userModel.findById(userId);
+        
         if(!users){
             return next(createHttpError(404, "User not found"));
         }
-        users.orders.push(orderId);
+        users.orders.push({auctionId});
         await users.save();
         res.json(users);
     } catch (error) {
