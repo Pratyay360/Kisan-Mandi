@@ -17,8 +17,8 @@ const MERCHANT_STATUS_URL =
 
 const redirectUrl = "http://localhost:5000/api/payment/status";
 
-const successUrl = "http://localhost:5173/payment-success";
-const failureUrl = "http://localhost:5173/payment-failure";
+const successUrl = "http://localhost:5173/profile";
+const failureUrl = "http://localhost:5173/profile";
 
 const createOrder = async (req, res) => {
   const { name, mobileNumber, amount } = req.body;
@@ -156,20 +156,6 @@ const status = async (req, res) => {
     // console.log("Status Response" + response);
     if (response.data.success === true) {
       console.log(response.data);
-      const paymentDetails = response.data.data;
-      const orderData = {
-        transactionId: merchantTransactionId,
-        amount: paymentDetails.amount / 100, // Convert to normal currency
-        productId: req.query.productId || "N/A", // Get from frontend
-        userId: req.query.userId || "N/A", // Get from frontend
-        status: "SUCCESS",
-        date: new Date(),
-      };
-
-      // Save order details in MongoDB
-      const newOrder = new orderModel(orderData);
-      console.log("New Order" + newOrder);
-      await newOrder.save();
 
       return res.redirect(successUrl);
     } else {

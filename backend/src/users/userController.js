@@ -181,7 +181,7 @@ const acceptOrder = async (req, res, next) =>{
         if(!users){
             return next(createHttpError(404, "User not found"));
         }
-        users.orders.push({auctionId});
+        users.orders.push({auctionId,status:"pending"});
         await users.save();
         res.json(users);
     } catch (error) {

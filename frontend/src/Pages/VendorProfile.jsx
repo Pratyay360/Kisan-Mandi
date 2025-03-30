@@ -26,32 +26,35 @@ import {
 } from "lucide-react";
 import ProductList from "../components/ProductList";
 import { useParams } from "react-router-dom";
-import { getFarmerById,getMyAuctions, updateUser } from "../http/api";
+import { getVendorById,getMyAuctions, updateUser } from "../http/api";
 import { Clock, Users, BarChart2, Eye } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import axios from "axios"
 import useTokenStore from "../http/store";
+import { getAuctionById,createOrder } from "../http/api";
+
 
 const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME; // Replace with actual Cloudinary cloud name
 const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET; // Replace with your Cloudinary upload preset if applicable
 
-const FarmerProfile = () => {
+const VendorProfile = () => {
   // Normally this would come from an API or database
   const id = useTokenStore.getState().userId
-  const [farmer, setFarmer] = useState();
+  const [vendor, setVendor] = useState();
   const [products, setProducts] = useState();
   const [uploading, setUploading] = useState();
   const [avatarUrl, setAvatarUrl] = useState();
   const [bannerUrl, setBannerUrl] = useState();
+  const [acceptedOrders, setAcceptedOrders] = useState();
 
-  const farmerDemo = {
+  const vendorDemo = {
     id: 1,
     name: "Sarah Johnson",
     avatar:
       "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80",
     location: "Green Valley, California",
     since: "2015",
-    bio: "Fourth-generation farmer specializing in organic vegetables and heritage grains. Our family farm has been practicing sustainable agriculture for over a years.",
+    bio: "Sample About Me",
     specialties: ["Organic Vegetables", "Heritage Grains", "Free-range Eggs"],
     certifications: ["USDA Organic", "Regenerative Organic Certified"],
     rating: 4.8,
@@ -156,36 +159,72 @@ const FarmerProfile = () => {
 
 
   useEffect(() => {
-    // Fetch farmer data from API or database based on farmerId
-    const fetchFarmer = async () => {
+    // Fetch vendor data from API or database based on vendorId
+    const fetchVendor = async () => {
       try {
-        const response = await getFarmerById(id);
+        const response = await getVendorById(id);
         setAvatarUrl(response.profileImage);
         setBannerUrl(response.bannerImage);
-        setFarmer(response);
+        setVendor(response);
       } catch (error) {
-        console.error("Failed to fetch farmer:", error);
+        console.error("Failed to fetch vendor:", error);
       }
     };
-    // Update farmer state with fetched data
-    fetchFarmer();
+    // Update vendor state with fetched data
+    fetchVendor();
   }, [id]);
 
-  useEffect(() => {
-    if (farmer) {
-      const fetchProducts = async () => {
+//   useEffect(() => {
+//     if (vendor) {
+//       const fetchAcceptedProducts = async () => {
+//         try {
+//             const response = []
+//             vendor.acceptedOrders.map(async (id) => {
+//                 const product = await getAuctionById(id);
+//                 response.push(product);
+//           });
+//           setAcceptedOrders(response);
+//           console.log("All Accepted Products:", acceptedOrders);
+//         } catch (error) {
+//           console.error("Failed to fetch products:", error);
+//         }
+//       };
+//       fetchAcceptedProducts();
+//     }
+//   }, [vendor]);
+
+useEffect(() => {
+    if (vendor) {
+      const fetchAcceptedProducts = async () => {
         try {
-          const response = await getMyAuctions(farmer._id);
-          setProducts(response);
+          const response = await Promise.all(
+            vendor.acceptedOrders.map(async (id) =>{ 
+                console.log("id",id)
+                const res= await getAuctionById(id.auctionId)
+                // console.log("res",{}
+                return {...res,status:id.status}
+            })
+          );
+          setAcceptedOrders(response);
+          console.log("All Accepted Products:", response);
         } catch (error) {
           console.error("Failed to fetch products:", error);
         }
       };
-      fetchProducts();
+      fetchAcceptedProducts();
     }
-  }, [farmer]);
-
+  }, [vendor]);
   const showManageOptions = false;
+
+  const handleAcceptOrder = async (name,phone,currentBid) => {
+    try {
+        const response = await createOrder({name,mobileNumber:phone,amount:currentBid});
+        console.log("create-order",response);
+        window.location.href = response.url
+    } catch (error) {
+      console.error("Failed to accept order:", error);
+    }
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-green-50 dark:bg-gray-900">
@@ -201,7 +240,7 @@ const FarmerProfile = () => {
             <span>Back to Home</span>
           </Link>
 
-          {/* Farmer Profile Header */}
+          {/* vendor Profile Header */}
           <div className="mb-10 bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-green-100 dark:border-gray-700">
             <div className="relative h-48 bg-gradient-to-r from-green-600 to-green-400">
               <Input
@@ -219,9 +258,9 @@ const FarmerProfile = () => {
               {/* Avatar */}
               <div className="absolute -top-16 left-6 sm:left-8">
                 <Avatar className="h-32 w-32 border-4 border-white dark:border-gray-800 shadow-lg">
-                  <AvatarImage src={avatarUrl} alt={farmer?.name} />
+                  <AvatarImage src={avatarUrl} alt={vendor?.name} />
                   <AvatarFallback className="bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200 text-4xl font-medium">
-                    {farmer?.name
+                    {vendor?.name
                       .split(" ")
                       .map((n) => n[0])
                       .join("")}
@@ -240,28 +279,11 @@ const FarmerProfile = () => {
               <div className="md:flex md:justify-between md:items-end">
                 <div>
                   <h1 className="text-3xl font-bold text-green-900 dark:text-green-100">
-                    {farmer?.name}
+                    {vendor?.name}
                   </h1>
                   <div className="flex items-center mt-2 text-green-700 dark:text-green-400">
                     <MapPin className="h-4 w-4 mr-1" />
-                    <span>{farmer?.location}</span>
-                  </div>
-
-                  <div className="flex items-center mt-1 text-green-700 dark:text-green-400">
-                    <Calendar className="h-4 w-4 mr-1" />
-                    <span>Farming since {farmer?.experience} years</span>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {farmerDemo.specialties.map((specialty, index) => (
-                      <Badge
-                        key={index}
-                        variant="outline"
-                        className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 border-green-200 dark:border-green-700"
-                      >
-                        {specialty}
-                      </Badge>
-                    ))}
+                    <span>{vendor?.location}</span>
                   </div>
                 </div>
 
@@ -269,12 +291,12 @@ const FarmerProfile = () => {
                   <div className="flex items-center text-amber-500">
                     <Star className="h-5 w-5 fill-current" />
                     <span className="ml-1 font-semibold text-gray-800 dark:text-gray-200">
-                      {/* {farmer.rating} */}
+                      {/* {vendor.rating} */}
                       4.8
                     </span>
                     <span className="ml-1 text-gray-600 dark:text-gray-400">
-                      {/* ({farmer.reviews} reviews) */}
-                      farmer.reviews reviews
+                      {/* ({vendor.reviews} reviews) */}
+                      vendor.reviews reviews
                     </span>
                   </div>
                 </div>
@@ -295,20 +317,20 @@ const FarmerProfile = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-700 dark:text-gray-300">
-                    {farmerDemo.bio}
+                    {vendorDemo.bio}
                   </p>
                 </CardContent>
               </Card>
 
               {/* Certifications Section */}
-              <Card className="dark:bg-gray-800 dark:border-gray-700 w-full">
+              {/* <Card className="dark:bg-gray-800 dark:border-gray-700 w-full">
                 <CardHeader>
                   <CardTitle className="text-green-800 dark:text-green-300">
                     Certifications
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  {farmerDemo.certifications.map((cert, index) => (
+                  {vendorDemo.certifications.map((cert, index) => (
                     <div
                       key={index}
                       className="flex items-center p-2 bg-green-50 dark:bg-green-900/30 rounded-md"
@@ -320,7 +342,7 @@ const FarmerProfile = () => {
                     </div>
                   ))}
                 </CardContent>
-              </Card>
+              </Card> */}
 
               {/* Contact Section */}
               <Card className="dark:bg-gray-800 dark:border-gray-700 w-full">
@@ -333,13 +355,13 @@ const FarmerProfile = () => {
                   <div className="flex items-center">
                     <Phone className="text-green-600 dark:text-green-400 mr-2 h-5 w-5" />
                     <span className="text-gray-700 dark:text-gray-300">
-                      {farmer?.phone}
+                      {vendor?.phone}
                     </span>
                   </div>
                   <div className="flex items-center">
                     <Mail className="text-green-600 dark:text-green-400 mr-2 h-5 w-5" />
                     <span className="text-gray-700 dark:text-gray-300">
-                      {farmer?.email}
+                      {vendor?.email}
                     </span>
                   </div>
                 </CardContent>
@@ -352,24 +374,17 @@ const FarmerProfile = () => {
                 <div className="flex place-content-between">
                   <CardHeader>
                     <CardTitle className="text-green-800 dark:text-green-300">
-                      Listed Products
+                      Accepted Orders
                     </CardTitle>
                     <CardDescription className="dark:text-gray-400">
-                      Fresh produce from {farmer?.name}'s farm
+                      Your All Accepted Oders
                     </CardDescription>
                   </CardHeader>
-                  <Link to="/product-form">
-                    <Button
-                      className="bg-green-600 hover:bg-green-700 mt-5 mr-4"
-                      size="lg"
-                    >
-                      <Plus className="mr-2 h-4 w-4" /> List New Product
-                    </Button>
-                  </Link>
+                  
                 </div>
                 <CardContent className="px-4 md:px-8 pb-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {products?.map((product) => (
+                    {acceptedOrders?.map((product) => (
                       <div
                         key={product._id}
                         className="border border-green-100 dark:border-green-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200"
@@ -433,32 +448,15 @@ const FarmerProfile = () => {
                               </div>
                             </div>
 
-                            {showManageOptions ? (
-                              <div className="grid grid-cols-2 gap-2">
-                                <Button variant="outline" size="sm">
-                                  <a
-                                    href={`/product/${product._id}`}
-                                    className="flex items-center"
-                                  >
-                                    <Eye className="h-4 w-4 mr-1" /> View
-                                  </a>
-                                </Button>
-                                <Button variant="outline" size="sm">
-                                  <a
-                                    href={`/product/${product._id}/stats`}
-                                    className="flex items-center"
-                                  >
-                                    <BarChart2 className="h-4 w-4 mr-1" /> Stats
-                                  </a>
-                                </Button>
-                              </div>
-                            ) : (
-                              <Button className="w-full">
-                                <a href={`/farmer-product/${product._id}`}>
-                                  View Product
-                                </a>
-                              </Button>
-                            )}
+                            
+                             
+                                {product?.status === "pending" ? (
+                                  <Button className="w-full" onClick={() => handleAcceptOrder(vendor.name,vendor.phone,product.currentBid)}>Accept Order</Button>
+                                ) : (
+                                  "Order Accepted"
+                                )}
+                              
+
                           </CardContent>
                         </Card>
                       </div>
@@ -483,4 +481,4 @@ const FarmerProfile = () => {
   );
 };
 
-export default FarmerProfile;
+export default VendorProfile;

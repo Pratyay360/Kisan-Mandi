@@ -1,12 +1,27 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useEffect, useState } from "react";
 import { Check, X } from "lucide-react";
+import { acceptOrder } from "../http/api";
 
 const avatar = "";
 
 export default function BidHistoryFarmer({ bids }) {
   const [selectedBid, setSelectedBid] = useState(null);
 
+
+//   setSelectedBid(bid._id)
+
+    const handleOnAccept= async (userId,bidId) => {
+        setSelectedBid(bidId);
+
+        try{
+            const response = await acceptOrder(userId,bidId);
+            console.log(response);
+        }
+        catch(error){
+            console.error(error);
+        }
+    }
   useEffect(() => {
     console.log(bids);
   }, [bids]);
@@ -32,7 +47,7 @@ export default function BidHistoryFarmer({ bids }) {
             <p className="font-semibold">₹{bid?.amount.toLocaleString()}</p>
             {!selectedBid && (
               <>
-                <button onClick={() => setSelectedBid(bid._id)} className="text-green-500">
+                <button onClick={() => handleOnAccept(bid.user,bid._id)} className="text-green-500">
                   <Check size={20} />
                 </button>
                 <button onClick={() => setSelectedBid(null)} className="text-red-500">
