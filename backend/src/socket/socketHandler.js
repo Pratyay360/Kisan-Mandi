@@ -53,9 +53,15 @@ export const setupAuctionHandlers = (io) => {
             const existingBid = auction.highestBidder.find(
               (bid) => bid.user.toString() === userId
             );
+            console.log("Existing bid:", existingBid);
 
             if (existingBid) {
               // Update bid amount only if the new bid is higher
+              console.log("Updating existing bid:", {
+                userId,
+                userName: user.name,
+                amount: bidAmount,
+              });
               if (bidAmount > existingBid.amount) {
                 existingBid.amount = bidAmount;
                 existingBid.bidTime = new Date();
@@ -66,6 +72,11 @@ export const setupAuctionHandlers = (io) => {
               }
             } else {
               // Push a new bid if the user hasn't bid before
+              console.log("Pushing new bid:", {
+                userId,
+                userName: user.name,
+                amount: bidAmount,
+              });
               auction.highestBidder.push({
                 user: userId,
                 userName: user.name,
@@ -93,7 +104,7 @@ export const setupAuctionHandlers = (io) => {
         };
 
         const updatedAuction = await updateBid(auctionId, bidAmount, userId);
-
+        console.log(updatedAuction);
         // 5. Broadcast to all room participants
         io.to(auctionId).emit("bidUpdate", {
           auctionId,
