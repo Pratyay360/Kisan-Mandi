@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { ModeToggle } from "../components/mode-toggle";
@@ -15,13 +15,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+import useTokenStore from "../http/store";
+
 
 export default function Navbar() {
   // State to manage the mobile navigation menu
+  const [userId, setUserId] = useState("");
   const navigate = useNavigate();
   const [isLogin, setLogin] = useState(false);
   useEffect(() => {
     const token = localStorage.getItem("user-store");
+    const userId= useTokenStore.getState().userId;
+    setUserId(userId);
     if (token) {
       setLogin(true);
     } else {
@@ -80,7 +85,7 @@ export default function Navbar() {
                       </Avatar>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                      <DropdownMenuItem onClick={() => navigate("/profile")}>Profile</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => navigate(`/profile/${userId}`)}>Profile</DropdownMenuItem>
                       <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>

@@ -135,7 +135,8 @@ const updateAuctionStatus = async (req, res, next) => {
 
 const getMyAuctions = async (req, res, next) => {
   try {
-    const auctions = await auctionModel.find({ farmerId: req.userId });
+    // const auctions = await auctionModel.find({ farmerId: req.userId });
+    const auctions = await auctionModel.find({ farmerId: req.userId }).populate({path: 'farmerId', select: 'name'});
     res.json(auctions);
   } catch (error) {
     next(error);
