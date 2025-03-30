@@ -5,9 +5,11 @@ import createHttpError from 'http-errors'
 export const createQuestion = async (req, res) => {
     try {
         const { title, description } = req.body
+        console.log(req.body)
 
         if (!title || !description) {
-            return next(createHttpError(400, 'Title and description are required'))
+            console.log('Title and description are required')
+            return createHttpError(400, 'Title and description are required')
         }
 
         const newQuestion = await forumModel.create({

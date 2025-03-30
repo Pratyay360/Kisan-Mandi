@@ -5,7 +5,7 @@ const forumSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    details:{
+    description:{
         type: String,
         required: true,
     },
@@ -22,6 +22,6 @@ const forumSchema = new mongoose.Schema({
         type: Array,
         default: [],
     },
-})
+},{timestamps: true});
 
 export default mongoose.model("Forum", forumSchema);

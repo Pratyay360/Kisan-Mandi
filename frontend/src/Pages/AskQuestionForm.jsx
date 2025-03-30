@@ -12,11 +12,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 // import { useToast } from "@/components/ui/use-toast";
+import { createQuestion } from "../http/api";
 
 const AskQuestionForm = () => {
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [tags, setTags] = useState("");
+  const [description, setContent] = useState("");
+  const [tags, setTags] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 //   const { toast } = useToast();
   const navigate = useNavigate();
@@ -26,14 +27,30 @@ const AskQuestionForm = () => {
     setIsSubmitting(true);
 
     // Simulate posting the question
-    setTimeout(() => {
-      setIsSubmitting(false);
-    //   toast({
-    //     title: "Question Posted",
-    //     description: "Your question has been posted successfully.",
-    //   });
-      navigate("/");
-    }, 1000);
+    // setTimeout(() => {
+    //   setIsSubmitting(false);
+    // //   toast({
+    // //     title: "Question Posted",
+    // //     description: "Your question has been posted successfully.",
+    // //   });
+    //   navigate("/");
+    // }, 1000);
+    const postQuestion = async () => {  
+      try {
+        const response = await createQuestion({
+          title,
+          description,
+          tags,
+        });
+        console.log(response);
+        setIsSubmitting(false);
+        navigate("/community-forum");
+      } catch (error) {
+        console.error("Error creating question:", error);
+        setIsSubmitting(false);
+      }
+    }
+    postQuestion();
   };
 
   return (
@@ -57,11 +74,11 @@ const AskQuestionForm = () => {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="content">Details</Label>
+            <Label htmlFor="description">Details</Label>
             <Textarea
-              id="content"
+              id="description"
               placeholder="Provide details about your question..."
-              value={content}
+              value={description}
               onChange={(e) => setContent(e.target.value)}
               required
               className="min-h-[150px] resize-y border-farm-brown-light/20"
