@@ -32,3 +32,21 @@ export const getQuestions = async (req, res) => {
         return createHttpError(500, 'Error while getting questions')
     }
 }
+
+export const postComment = async (req, res) => {
+    try {
+        const { comment } = req.body
+        if (!comment) {
+            return createHttpError(400, 'Comment is required')
+        }
+        const question = await forumModel.findById(req.params.id)
+        question.comments.push({
+            userId: req.userId, 
+            comment,
+        })
+        await question.save()
+        res.status(201).json(question)
+    } catch (error) {
+        return createHttpError(500, 'Error while posting comment')
+    }
+}

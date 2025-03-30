@@ -135,8 +135,8 @@ const FarmerProfile = () => {
               {/* Avatar */}
               <div className="absolute -top-16 left-6 sm:left-8">
                 <Avatar className="h-32 w-32 border-4 border-white dark:border-gray-800 shadow-lg">
-                  <AvatarImage src={farmer?.avatar} alt={farmer?.name} />
-                  <AvatarFallback className="bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200 text-4xl font-medium">
+                  <AvatarImage placeholder="blur" onClick={() => {console.log("clicked")}} src={farmer?.avatar} alt={farmer?.name} />
+                  <AvatarFallback onClick={() => {console.log("clicked avatar")}} className="bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200 text-4xl font-medium">
                     {farmer?.name
                       .split(" ")
                       .map((n) => n[0])
