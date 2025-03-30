@@ -147,3 +147,13 @@ export const postComment = async (id, data) => {
     throw error;
   }
 };
+
+export const getFarmProducts=async () => {
+  try{
+    const response = await api.get('/api/products');
+    return response.data;
+  }catch(error){
+    console.log(error)
+    throw error
+  }
+}

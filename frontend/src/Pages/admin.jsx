@@ -47,15 +47,18 @@ export default function Admin() {
     const [loading, setLoading] = useState(true);
     const [currentAuctions, setCurrentAuctions] = useState(currentAuctionsMock);
     const [newProduct, setNewProduct] = useState({
+        id: "",
         title: "",
         price: "",
         description: "",
         rating: "",
-        image: ""
+        imageUrl: "",
+        link: ""
     });
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const { theme, setTheme } = useTheme();
-
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState(null);
+    const [submitSuccess, setSubmitSuccess] = useState(false);
     useEffect(() => {
         try {
             const token = localStorage.getItem("user-store");
@@ -77,18 +80,54 @@ export default function Admin() {
         setCurrentAuctions(prev => prev.filter(auction => auction.id !== auctionId));
     };
 
-    const handleAddProduct = (e) => {
+    const handleAddProduct = async (e) => {
         e.preventDefault();
-        console.log("Adding new product:", newProduct);
+        setIsSubmitting(true);
+        setSubmitError(null);
         
-        setNewProduct({
-            title: "",
-            price: "",
-            description: "",
-            rating: "",
-            image: ""
-        });
-        setIsDialogOpen(false);
+        try {
+            const productData = {
+                ...newProduct,
+                price: parseFloat(newProduct.price),
+                rating: parseFloat(newProduct.rating)
+            };
+            
+            const response = await fetch('http://localhost:5000/api/products', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(productData)
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to add product');
+            }            
+            const result = await response.json();
+            console.log("Product added successfully:", result);
+            setSubmitSuccess(true);
+            setNewProduct({
+                id: "",
+                title: "",
+                price: "",
+                description: "",
+                rating: "",
+                imageUrl: "",
+                link: ""
+            });
+            
+            setTimeout(() => {
+                setIsDialogOpen(false);
+                setSubmitSuccess(false);
+            }, 1500);
+            
+        } catch (error) {
+            console.error("Error adding product:", error);
+            setSubmitError(error.message || 'Failed to add product. Please try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const handleInputChange = (e) => {
@@ -134,7 +173,7 @@ export default function Admin() {
                     <h1 className="text-3xl font-bold">Admin Dashboard</h1>
                     
                     <div className="flex gap-4">
-                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                             <DialogTrigger asChild>
                                 <Button className="bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800">Add New Product</Button>
                             </DialogTrigger>
@@ -148,6 +187,31 @@ export default function Admin() {
                                 
                                 <form onSubmit={handleAddProduct}>
                                     <div className="grid gap-4 py-4">
+                                        {submitError && (
+                                            <div className="col-span-4 p-3 text-sm text-white bg-red-500 rounded-md">
+                                                {submitError}
+                                            </div>
+                                        )}
+                                        
+                                        {submitSuccess && (
+                                            <div className="col-span-4 p-3 text-sm text-white bg-green-500 rounded-md">
+                                                Product added successfully!
+                                            </div>
+                                        )}
+                                    
+                                        <div className="grid grid-cols-4 items-center gap-4">
+                                            <Label htmlFor="ProductID" className="text-right dark:text-gray-300">
+                                                ProductID
+                                            </Label>
+                                            <Input
+                                                id="id"
+                                                name="id"
+                                                value={newProduct.id}
+                                                onChange={handleInputChange}
+                                                className="col-span-3 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                                                required
+                                            />
+                                        </div>
                                         <div className="grid grid-cols-4 items-center gap-4">
                                             <Label htmlFor="title" className="text-right dark:text-gray-300">
                                                 Title
@@ -217,9 +281,22 @@ export default function Admin() {
                                                 Image URL
                                             </Label>
                                             <Input
-                                                id="image"
-                                                name="image"
-                                                value={newProduct.image}
+                                                id="imageUrl"
+                                                name="imageUrl"
+                                                value={newProduct.imageUrl}
+                                                onChange={handleInputChange}
+                                                className="col-span-3 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                                                required
+                                            />
+                                        </div>
+                                        <div className="grid grid-cols-4 items-center gap-4">
+                                            <Label htmlFor="Link" className="text-right dark:text-gray-300">
+                                                Ecommerce Link
+                                            </Label>
+                                            <Input
+                                                id="link"
+                                                name="link"
+                                                value={newProduct.link}
                                                 onChange={handleInputChange}
                                                 className="col-span-3 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
                                                 required
@@ -228,12 +305,21 @@ export default function Admin() {
                                     </div>
                                     
                                     <DialogFooter>
-                                        <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}
-                                            className="dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600">
+                                        <Button 
+                                            type="button" 
+                                            variant="outline" 
+                                            onClick={() => setIsDialogOpen(false)}
+                                            className="dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
+                                            disabled={isSubmitting}
+                                        >
                                             Cancel
                                         </Button>
-                                        <Button type="submit" className="dark:bg-primary dark:text-primary-foreground">
-                                            Save Product
+                                        <Button 
+                                            type="submit" 
+                                            className="dark:bg-primary dark:text-primary-foreground"
+                                            disabled={isSubmitting}
+                                        >
+                                            {isSubmitting ? 'Saving...' : 'Save Product'}
                                         </Button>
                                     </DialogFooter>
                                 </form>
