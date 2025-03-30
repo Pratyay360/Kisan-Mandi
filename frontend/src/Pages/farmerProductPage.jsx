@@ -26,6 +26,7 @@ import { placeBid, updateBid, useSocket } from "@/src/socket/socket.js";
 import { data, useParams } from "react-router-dom";
 import { getAuctionById, getFarmerById } from "@/src/http/api";
 import useTokenStore from "../http/store";
+import BidHistoryFarmer from "../components/BidHistoryFarmer";
 
 const initialProduct = {
   id: "prod-123",
@@ -357,34 +358,6 @@ const FarmerProductPage = () => {
   
                   </div>
     
-                  <form onSubmit={handleBidSubmit} className="space-y-4">
-                    <div>
-                      <label htmlFor="bid-amount" className="text-sm font-medium">
-                        Your Price (INR)
-                      </label>
-                      <div className="relative mt-1">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                          ₹
-                        </span>
-                        <Input
-                          id="bid-amount"
-                          type="number"
-                          value={bidAmount}
-                          onChange={(e) => setBidAmount(Number(e.target.value))}
-                          className="pl-7"
-                          min={product.currentBid + 1}
-                          step={1}
-                          required
-                        />
-                      </div>
-                    </div>
-    
-                    <Button type="submit" className="w-full" size="lg">
-                      <ArrowUp className="h-4 w-4 mr-2" />
-                      Your Offer
-                    </Button>
-    
-                  </form>
                 </CardContent>
               </Card>
     
@@ -415,7 +388,7 @@ const FarmerProductPage = () => {
                     </Button>
                   </div>
     
-                  {/* <BidHistory bids={bids} /> */}
+                  <BidHistoryFarmer bids={bids} />
     
                   {!showAllBidders && bids?.length > 3 && (
                     <p className="text-sm text-center text-muted-foreground mt-3">

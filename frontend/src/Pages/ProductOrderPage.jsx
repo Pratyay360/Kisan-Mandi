@@ -26,6 +26,7 @@ import { placeBid, updateBid, useSocket } from "@/src/socket/socket.js";
 import { data, useParams } from "react-router-dom";
 import { getAuctionById, getFarmerById } from "@/src/http/api";
 import useTokenStore from "../http/store";
+import BidHistory from "../components/BidHistory";
 
 const initialProduct = {
   id: "prod-123",
@@ -96,7 +97,7 @@ const ProductOrderPage = () => {
         );
         return difference > 0 ? difference : 0;
       };
-      
+
       useEffect(() => {
         updateBid(socket, updateBidCallback);
       }, [socket]);
@@ -109,6 +110,7 @@ const ProductOrderPage = () => {
           try {
             const response = await getAuctionById(id);
             setAuction(response);
+            console.log(response.highestBidder);
             setBids(response.highestBidder);
             setCurrentBid(response.currentBid);
             setBidAmount(response.minBidIncrement + response.startingBid);
@@ -415,7 +417,7 @@ const ProductOrderPage = () => {
                     </Button>
                   </div>
     
-                  {/* <BidHistory bids={bids} /> */}
+                  <BidHistory bids={bids} />
     
                   {!showAllBidders && bids?.length > 3 && (
                     <p className="text-sm text-center text-muted-foreground mt-3">
