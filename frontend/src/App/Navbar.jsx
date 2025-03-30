@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-
+import { Wheat } from "lucide-react";
 import useTokenStore from "../http/store";
 
 
@@ -73,8 +73,7 @@ export default function Navbar() {
           {/* Website Logo */}
           <Link to="/" className="flex items-center gap-2">
             <span className="text-2xl font-bold text-green-800">
-              <span className="text-orange-600">Kisan</span>Mandi
-            </span>
+              <span className="text-orange-600">Kisan</span>Mandi</span>  <Wheat className="h-4 w-4" />
           </Link>
 
           {/* Desktop Navigation */}
