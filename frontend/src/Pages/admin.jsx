@@ -107,25 +107,25 @@ export default function Admin() {
         );
     }
 
-    if (!isAdmin) {
-        return (
-            <div className="min-h-screen p-8 flex items-center justify-center dark:bg-gray-900">
-                <Card className="w-full max-w-md dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700">
-                    <CardHeader>
-                        <CardTitle>Access Denied</CardTitle>
-                        <CardDescription className="dark:text-gray-400">
-                            You don't have permission to access the admin panel.
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <Button onClick={() => window.location.href = "/"} className="w-full">
-                            Return to Home
-                        </Button>
-                    </CardContent>
-                </Card>
-            </div>
-        );
-    }
+    // if (!isAdmin) {
+    //     return (
+    //         <div className="min-h-screen p-8 flex items-center justify-center dark:bg-gray-900">
+    //             <Card className="w-full max-w-md dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700">
+    //                 <CardHeader>
+    //                     <CardTitle>Access Denied</CardTitle>
+    //                     <CardDescription className="dark:text-gray-400">
+    //                         You don't have permission to access the admin panel.
+    //                     </CardDescription>
+    //                 </CardHeader>
+    //                 <CardContent>
+    //                     <Button onClick={() => window.location.href = "/"} className="w-full">
+    //                         Return to Home
+    //                     </Button>
+    //                 </CardContent>
+    //             </Card>
+    //         </div>
+    //     );
+    // }
 
     return (
         <div className="min-h-screen p-8 bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
@@ -134,16 +134,7 @@ export default function Admin() {
                     <h1 className="text-3xl font-bold">Admin Dashboard</h1>
                     
                     <div className="flex gap-4">
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                            className="dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
-                        >
-                            {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
-                        </Button>
-
-                        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                             <DialogTrigger asChild>
                                 <Button className="bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800">Add New Product</Button>
                             </DialogTrigger>
