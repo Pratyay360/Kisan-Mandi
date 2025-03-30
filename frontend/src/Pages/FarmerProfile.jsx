@@ -274,7 +274,7 @@ const FarmerProfile = () => {
                     </span>
                     <span className="ml-1 text-gray-600 dark:text-gray-400">
                       {/* ({farmer.reviews} reviews) */}
-                      farmer.reviews reviews
+                       reviews
                     </span>
                   </div>
                 </div>

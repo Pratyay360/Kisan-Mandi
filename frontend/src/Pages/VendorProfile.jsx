@@ -295,8 +295,8 @@ useEffect(() => {
                       4.8
                     </span>
                     <span className="ml-1 text-gray-600 dark:text-gray-400">
-                      {/* ({vendor.reviews} reviews) */}
-                      vendor.reviews reviews
+                      {/* () */}
+                      reviews 
                     </span>
                   </div>
                 </div>
