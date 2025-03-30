@@ -3,33 +3,42 @@ import { Linkedin, Twitter, Github } from "lucide-react";
 
 const teamMembers = [
     { 
-        name: "Alice Johnson", 
-        role: "CEO", 
-        image: "https://via.placeholder.com/100", 
+        name: "Debjyoti Sarkar", 
+        role: "Backend Developer", 
+        image: "https://media.licdn.com/dms/image/v2/D5603AQE_tpxqMa9MWg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1690957854136?e=1749081600&v=beta&t=2fc5NiuctGqwPjft-a0RKRKDjodIF0KTy3-SvRhX_wM", 
         social: {
-            linkedin: "https://linkedin.com/in/alicejohnson",
-            twitter: "https://twitter.com/alicejohnson",
-            github: "https://github.com/alicejohnson"
+            linkedin: "https://www.linkedin.com/in/vicky990/",
+            twitter: "https://x.com/debzoti",
+            github: "https://github.com/Debzoti"
         }
     },
     { 
-        name: "Bob Smith", 
-        role: "CTO", 
-        image: "https://via.placeholder.com/100", 
+        name: "Haresh Khan", 
+        role: "Backend Developer", 
+        image: "https://media.licdn.com/dms/image/v2/D4E03AQFpTNxpcewl5w/profile-displayphoto-shrink_800_800/B4EZOyCuu4HkAk-/0/1733858881685?e=1749081600&v=beta&t=8dOsx8ZpL0en5qyy4PsFj0_c5aPbTbC02lYheOMIsoE", 
         social: {
-            linkedin: "https://linkedin.com/in/bobsmith",
-            twitter: "https://twitter.com/bobsmith",
-            github: "https://github.com/bobsmith"
+            linkedin: "https://www.linkedin.com/in/haresh-khan-481451331",
+            twitter: "#",
+            github: "https://github.com/hareshkhan"
         }
     },
     { 
-        name: "Charlie Davis", 
-        role: "Lead Developer", 
-        image: "https://via.placeholder.com/100", 
+        name: "Pratyay Mustafi", 
+        role: "Fronted Developer", 
+        image: "https://avatars.githubusercontent.com/u/61408566", 
         social: {
-            linkedin: "https://linkedin.com/in/charliedavis",
-            twitter: "https://twitter.com/charliedavis",
-            github: "https://github.com/charliedavis"
+            linkedin: "https://www.linkedin.com/in/pratyay360/",
+            twitter: "https://x.com/realPratyay",
+            github: "https://github.com/pratyay360"
+        }
+    },{ 
+        name: "Sayantan Das", 
+        role: "Fronted Developer", 
+        image: "https://media.licdn.com/dms/image/v2/D4D35AQGBeRvAaKRTiA/profile-framedphoto-shrink_800_800/profile-framedphoto-shrink_800_800/0/1731937238597?e=1743930000&v=beta&t=oK7bD2O6Gg45sguqZsDw3EkPAqxxrrLQxQRhjJP3lEk", 
+        social: {
+            linkedin: "https://www.linkedin.com/in/sayantan-das-185b8424b",
+            twitter: "#",
+            github: "https://github.com/321sayantan"
         }
     }
 ];
