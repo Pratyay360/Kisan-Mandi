@@ -91,6 +91,7 @@ const isOwner = async (req, res, next) => {
 
 const getAuctionById = async (req, res, next) => {
   try {
+    console.log("Fetching auction details... of", req.params.id);
     const auction = await auctionModel.findById(req.params.id);
     if (!auction) {
       return next(createHttpError(404, "Auction not found"));
