@@ -25,6 +25,7 @@ import ProductPage from "./Pages/ProductPage";
 import AboutUs from "./Pages/AboutUs";
 import FarmerProfile from "./Pages/FarmerProfile";
 import FarmerProductPage from "./Pages/farmerProductPage";
+import QuestionPage from "./Pages/QuestionPage";
 import Admin from "./Pages/admin";
 // Create a toast context for application-wide error notifications
 export const ToastContext = createContext({
@@ -100,6 +101,7 @@ const router = createBrowserRouter([
       { path: "products", element: <ProductPage /> },
       { path: "community-forum", element: <CommunityForum /> },
       { path: "ask-question-form", element: <AskQuestionForm /> },
+      { path: "question/:id", element: <QuestionPage /> },
       { path: "profile/:id", element: <FarmerProfile /> },
       { path:"farmer-product/:id", element: <FarmerProductPage />},
       { path:"admin", element: <Admin /> },
