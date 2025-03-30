@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import QuestionCard from "@/src/components/QuestionCard.jsx";
 import CommunityHeader from "@/src/components/CommunityHeader.jsx";
+
+import { getQuestions } from "../http/api";
 
 const DUMMY_QUESTIONS = [
   {
@@ -63,6 +65,20 @@ const DUMMY_QUESTIONS = [
 
 const CommunityForum = () => {
   const [activeTab, setActiveTab] = useState("recent");
+  const [questions, setQuestions] = useState([]);
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const response = await getQuestions();
+        setQuestions(response);
+      } catch (error) {
+        console.error("Error fetching questions:", error);
+      }
+    };
+
+    fetchQuestions();
+  }, []);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -91,22 +107,22 @@ const CommunityForum = () => {
           </div>
 
           <TabsContent value="recent" className="space-y-4 mt-0">
-            {DUMMY_QUESTIONS.map((question) => (
+            {questions?.map((question) => (
               <QuestionCard
-                key={question.id}
-                id={question.id}
+                key={question._id}
+                id={question._id}
                 title={question.title}
-                content={question.content}
-                author={question.author}
-                date={question.date}
-                votes={question.votes}
-                answers={question.answers}
+                content={question.description}
+                author={question.userId.name}
+                date={question.createdAt}
+                votes={30}
+                answers={question.comments.length}
                 tags={question.tags}
               />
             ))}
           </TabsContent>
 
-          <TabsContent value="popular" className="space-y-4 mt-0">
+          {/* <TabsContent value="popular" className="space-y-4 mt-0">
             {DUMMY_QUESTIONS.slice()
               .sort((a, b) => b.votes - a.votes)
               .map((question) => (
@@ -122,9 +138,9 @@ const CommunityForum = () => {
                   tags={question.tags}
                 />
               ))}
-          </TabsContent>
+          </TabsContent> */}
 
-          <TabsContent value="unanswered" className="space-y-4 mt-0">
+          {/* <TabsContent value="unanswered" className="space-y-4 mt-0">
             {DUMMY_QUESTIONS.filter((question) => question.answers === 0)
               .length > 0 ? (
               DUMMY_QUESTIONS.filter((question) => question.answers === 0).map(
@@ -148,8 +164,8 @@ const CommunityForum = () => {
                   No unanswered questions at the moment!
                 </p>
               </div>
-            )}
-          </TabsContent>
+            )} */}
+          {/* </TabsContent> */}
         </Tabs>
       </main>
     </div>

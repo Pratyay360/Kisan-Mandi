@@ -96,3 +96,23 @@ export const updateStatus = async (id) => {
     throw error;
   }
 };
+
+export const createQuestion = async (data) => {
+  try {
+    const response = await api.post("/api/forums", data);
+    return response.data;
+  } catch (error) {
+    console.error("Question creation failed:", error);
+    throw error;
+  }
+};
+
+export const getQuestions = async () => {
+  try {
+    const response = await api.get("/api/forums");
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch questions:", error);
+    throw error;
+  }
+};
