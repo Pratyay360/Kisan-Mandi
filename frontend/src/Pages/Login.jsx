@@ -75,7 +75,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-yellow-100 dark:from-gray-900 dark:to-gray-800 px-4">
       <div className="flex max-w-4xl w-full bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
         <div className="w-1/2 bg-gradient-to-br from-green-600 to-green-800 dark:from-green-700 dark:to-green-900 text-white p-8">
-          <h2 className="text-2xl font-bold">Farm Connect</h2>
+          <h2 className="text-2xl font-bold">KisanMandi</h2>
           <p className="mt-2">Connecting farmers and wholesalers directly</p>
           <div className="mt-6">
             <h3 className="font-semibold">Why Join Us?</h3>
