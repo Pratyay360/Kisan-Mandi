@@ -171,4 +171,20 @@ const editUserById = async (req, res, next) =>{
         next(error);
 }
 }
-export {createUser, loginUser, farmerInfo, vendorInfo,editUserById}
+
+
+const acceptOrder = async (req, res, next) =>{
+    try{
+        const users = await userModel.findById(userId);
+        if(!users){
+            return next(createHttpError(404, "User not found"));
+        }
+        users.orders.push(orderId);
+        await users.save();
+        res.json(users);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export {createUser, loginUser, farmerInfo, vendorInfo,editUserById,acceptOrder}
