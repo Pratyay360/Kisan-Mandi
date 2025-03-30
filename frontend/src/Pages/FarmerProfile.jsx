@@ -16,7 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Wheat,
   MapPin,
-  Apple,
+  Plus,
   Carrot,
   ArrowLeft,
   Star,
@@ -28,12 +28,20 @@ import ProductList from "../components/ProductList";
 import { useParams } from "react-router-dom";
 import { getFarmerById,getMyAuctions } from "../http/api";
 import { Clock, Users, BarChart2, Eye } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import axios from "axios"
+
+const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME; // Replace with actual Cloudinary cloud name
+const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET; // Replace with your Cloudinary upload preset if applicable
 
 const FarmerProfile = () => {
   // Normally this would come from an API or database
   const { id } = useParams();
   const [farmer, setFarmer] = useState();
   const [products, setProducts] = useState();
+  const [uploading, setUploading] = useState();
+  const [avatarUrl, setAvatarUrl] = useState();
+  const [bannerUrl, setBannerUrl] = useState();
 
   const farmerDemo = {
     id: 1,
@@ -54,43 +62,104 @@ const FarmerProfile = () => {
         id: 1,
         name: "Organic Heirloom Tomatoes",
         price: "$4.99/lb",
-        image:
-          ["https://images.unsplash.com/photo-1592924357190-51f7a3319392?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"],
+        image: [
+          "https://images.unsplash.com/photo-1592924357190-51f7a3319392?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+        ],
       },
       {
         id: 2,
         name: "Ancient Grain Wheat Berries",
         price: "$6.50/lb",
-        image:
-          ["https://images.unsplash.com/photo-1565806813968-a8636a640e5a?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"],
+        image: [
+          "https://images.unsplash.com/photo-1565806813968-a8636a640e5a?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+        ],
       },
       {
         id: 3,
         name: "Fresh Free-Range Eggs",
         price: "$5.99/dozen",
-        image:
-          ["https://images.unsplash.com/photo-1506976785307-8732e854ad03?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"],
+        image: [
+          "https://images.unsplash.com/photo-1506976785307-8732e854ad03?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+        ],
       },
       {
         id: 4,
         name: "Fresh Free-Range Eggs",
         price: "$5.99/dozen",
-        image:
-          ["https://images.unsplash.com/photo-1506976785307-8732e854ad03?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"],
+        image: [
+          "https://images.unsplash.com/photo-1506976785307-8732e854ad03?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+        ],
       },
     ],
   };
+
+
+    const handleBannerUpload = async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", uploadPreset); // Using the Cloudinary upload preset
+
+      try {
+        setUploading(true);
+        const response = await axios.post(
+          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+          formData
+        );
+
+        if (response.data.secure_url) {
+          console.log("Uploaded Image URL:", response.data.secure_url);
+          setBannerUrl(response.data.secure_url); // Updating the state with the new profile image
+        }
+      } catch (error) {
+        console.error("Image upload failed:", error);
+      } finally {
+        setUploading(false);
+      }
+    };
+
+
+  const handleAvatarUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", uploadPreset); // Using the Cloudinary upload preset
+
+    try {
+      setUploading(true);
+      const response = await axios.post(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        formData
+      );
+
+      if (response.data.secure_url) {
+        console.log("Uploaded Image URL:", response.data.secure_url);
+        setAvatarUrl(response.data.secure_url); // Updating the state with the new profile image
+      }
+    } catch (error) {
+      console.error("Image upload failed:", error);
+    } finally {
+      setUploading(false);
+    }
+  };
+
 
   useEffect(() => {
     // Fetch farmer data from API or database based on farmerId
     const fetchFarmer = async () => {
       try {
         const response = await getFarmerById(id);
+        setAvatarUrl(response.profileImage);
+        setBannerUrl(response.bannerImage);
         setFarmer(response);
       } catch (error) {
         console.error("Failed to fetch farmer:", error);
       }
-    }
+    };
     // Update farmer state with fetched data
     fetchFarmer();
   }, [id]);
@@ -104,7 +173,7 @@ const FarmerProfile = () => {
         } catch (error) {
           console.error("Failed to fetch products:", error);
         }
-      }
+      };
       fetchProducts();
     }
   }, [farmer]);
@@ -128,14 +197,22 @@ const FarmerProfile = () => {
           {/* Farmer Profile Header */}
           <div className="mb-10 bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-green-100 dark:border-gray-700">
             <div className="relative h-48 bg-gradient-to-r from-green-600 to-green-400">
-              <div className="absolute inset-0 mix-blend-overlay opacity-20 bg-[url('https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center"></div>
+              <Input
+                type="file"
+                accept="image/*"
+                multiple
+                className="absolute inset-0 opacity-0 cursor-pointer h-full w-full"
+                onChange={handleBannerUpload}
+                disabled={uploading}
+              />
+              {/* <div className="absolute inset-0 mix-blend-overlay opacity-20 bg-[url('https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center"></div> */}
             </div>
 
             <div className="relative px-6 pt-16 pb-8 sm:px-8">
               {/* Avatar */}
               <div className="absolute -top-16 left-6 sm:left-8">
                 <Avatar className="h-32 w-32 border-4 border-white dark:border-gray-800 shadow-lg">
-                  <AvatarImage src={farmer?.avatar} alt={farmer?.name} />
+                  <AvatarImage src={avatarUrl} alt={farmer?.name} />
                   <AvatarFallback className="bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200 text-4xl font-medium">
                     {farmer?.name
                       .split(" ")
@@ -143,13 +220,13 @@ const FarmerProfile = () => {
                       .join("")}
                   </AvatarFallback>
                   <Input
-                                                      type="file"
-                                                      accept="image/*"
-                                                      multiple
-                                                      className="absolute inset-0 opacity-0 cursor-pointer h-full w-full"
-                                                      onChange={handleImageUpload}
-                                                      disabled={uploading}
-                                                    />
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="absolute inset-0 opacity-0 cursor-pointer h-full w-full"
+                    onChange={handleAvatarUpload}
+                    disabled={uploading}
+                  />
                 </Avatar>
               </div>
 
@@ -211,7 +288,7 @@ const FarmerProfile = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-700 dark:text-gray-300">
-                  {farmerDemo.bio}
+                    {farmerDemo.bio}
                   </p>
                 </CardContent>
               </Card>
@@ -265,14 +342,24 @@ const FarmerProfile = () => {
             {/* Right Column */}
             <div className="md:col-span-2 w-full">
               <Card className="dark:bg-gray-800 dark:border-gray-700 w-full">
-                <CardHeader>
-                  <CardTitle className="text-green-800 dark:text-green-300">
-                    Listed Products
-                  </CardTitle>
-                  <CardDescription className="dark:text-gray-400">
-                    Fresh produce from {farmer?.name}'s farm
-                  </CardDescription>
-                </CardHeader>
+                <div className="flex place-content-between">
+                  <CardHeader>
+                    <CardTitle className="text-green-800 dark:text-green-300">
+                      Listed Products
+                    </CardTitle>
+                    <CardDescription className="dark:text-gray-400">
+                      Fresh produce from {farmer?.name}'s farm
+                    </CardDescription>
+                  </CardHeader>
+                  <Link to="/product-form">
+                    <Button
+                      className="bg-green-600 hover:bg-green-700 mt-5 mr-4"
+                      size="lg"
+                    >
+                      <Plus className="mr-2 h-4 w-4" /> List New Product
+                    </Button>
+                  </Link>
+                </div>
                 <CardContent className="px-4 md:px-8 pb-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {products?.map((product) => (
@@ -325,8 +412,7 @@ const FarmerProfile = () => {
                                   Current Price
                                 </p>
                                 <p className="text-lg font-bold">
-                                  ₹{product?.currentBid.toLocaleString()
-                                  }
+                                  ₹{product?.currentBid.toLocaleString()}
                                 </p>
                               </div>
                               <div className="text-right">
@@ -334,7 +420,7 @@ const FarmerProfile = () => {
                                   Apply
                                 </p>
                                 <p className="flex items-center">
-                                  <Users className="h-4 w-4 mr-1" /> 
+                                  <Users className="h-4 w-4 mr-1" />
                                   {product?.highestBidder.length}
                                 </p>
                               </div>
