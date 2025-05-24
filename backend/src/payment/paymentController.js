@@ -134,6 +134,13 @@ const createOrder = async (req, res) => {
 const status = async (req, res) => {
   const merchantTransactionId = req.query.id;
   console.log("Merchant Transaction ID:" + merchantTransactionId);
+
+  // Validate merchantTransactionId
+  const isValidTransactionId = TRANSACTION_ID_REGEX.test(merchantTransactionId);
+  if (!isValidTransactionId) {
+    return res.status(400).json({ error: "Invalid transaction ID format" });
+  }
+
   const keyIndex = 1;
   const string =
     `/pg/v1/status/${MERCHANT_ID}/${merchantTransactionId}` + MERCHANT_KEY;
