@@ -136,9 +136,10 @@ const status = async (req, res) => {
   console.log("Merchant Transaction ID:" + merchantTransactionId);
 
   // Validate merchantTransactionId
-  const isValidTransactionId = TRANSACTION_ID_REGEX.test(merchantTransactionId);
+  const ALLOWED_TRANSACTION_IDS = ["txn123", "txn456", "txn789"]; // Example allow-list
+  const isValidTransactionId = ALLOWED_TRANSACTION_IDS.includes(merchantTransactionId);
   if (!isValidTransactionId) {
-    return res.status(400).json({ error: "Invalid transaction ID format" });
+    return res.status(400).json({ error: "Invalid or unauthorized transaction ID" });
   }
 
   const keyIndex = 1;
