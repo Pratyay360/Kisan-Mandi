@@ -136,7 +136,7 @@ const status = async (req, res) => {
   console.log("Merchant Transaction ID:" + merchantTransactionId);
 
   // Validate merchantTransactionId
-  const isValidTransactionId = /^[a-zA-Z0-9_-]+$/.test(merchantTransactionId);
+  const isValidTransactionId = TRANSACTION_ID_REGEX.test(merchantTransactionId);
   if (!isValidTransactionId) {
     return res.status(400).json({ error: "Invalid transaction ID format" });
   }
