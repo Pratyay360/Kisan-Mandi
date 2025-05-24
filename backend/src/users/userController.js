@@ -73,16 +73,20 @@ const createUser = async (req, res, next) =>{
 
 const loginUser = async (req, res, next) =>{
 
-        const {email,password} = req.body;
-        if(!email || !password){
+        const {email: rawEmail,password} = req.body; // Destructure email as rawEmail
+        if(!rawEmail || !password){ // Check rawEmail
             const error = createHttpError(400, "All fields are required");
             return next(error); // passing err to global err handler  to client 
         }
+
+        // Sanitize email input
+        const email = String(rawEmail).trim();
+
     //check user in db or not
 
     let user 
     try {
-        user = await userModel.findOne({email});
+        user = await userModel.findOne({email: email}); // Use sanitized email
         if(!user){
             const error = createHttpError(404, "User not found");
             return next(error); // passing err to global err handler  to client 
