@@ -38,7 +38,7 @@ const createUser = async (req, res, next) =>{
     }
 
     try {
-        const existingUser = await userModel.findOne({ email });
+        const existingUser = await userModel.findOne({ email: { $eq: email } });
         if (existingUser) {
             return next(createHttpError(400, "User already exists"));
         }
